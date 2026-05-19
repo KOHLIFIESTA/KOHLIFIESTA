@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arab Online RP</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #050505;
+    color: white;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(circle at top, rgba(255,208,0,0.08), transparent 55%);
+    z-index: -1;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 8%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0,0,0,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255,208,0,0.18);
+    z-index: 1000;
+    animation: slideDown 0.8s ease;
+}
+
+.logo {
+    font-size: 32px;
+    font-weight: 700;
+    color: #ffd000;
+    text-shadow: 0 0 18px rgba(255,208,0,0.65);
+}
+
+nav a {
+    text-decoration: none;
+    color: white;
+    margin-left: 30px;
+    font-size: 17px;
+    transition: color 0.25s ease;
+}
+
+nav a:hover {
+    color: #ffd000;
+    text-shadow: 0 0 10px #ffd000;
+}
+
+.hero {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    background-color: #111;
+    background-image: linear-gradient(rgba(5,5,5,0.65), rgba(5,5,5,0.95)),
+      url('https://wallpapercat.com/w/full/a/6/0/4971-2880x1800-desktop-hd-grand-theft-auto-san-andreas-background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(255,208,0,0.12), transparent 40%);
+    pointer-events: none;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1.8s ease;
+}
+
+.hero h1 {
+    font-size: clamp(48px, 7vw, 80px);
+    color: #ffd000;
+    text-shadow: 0 0 30px rgba(255,208,0,0.8);
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: clamp(18px, 2vw, 24px);
+    max-width: 820px;
+    margin: auto;
+    line-height: 1.7;
+    color: #e6e6e6;
+}
+
+.hero-btns {
+    margin-top: 34px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 35px;
+    margin: 10px;
+    background: #ffd000;
+    color: black;
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: 14px;
+    transition: transform 0.3s ease, background 0.3s ease;
+    box-shadow: 0 0 20px rgba(255,208,0,0.28);
+    border: none;
+}
+
+.btn:hover {
+    transform: translateY(-4px);
+    background: #fff;
+    box-shadow: 0 0 28px rgba(255,255,255,0.45);
+}
+
+section {
+    padding: 110px 8% 50px 8%;
+}
+
+.section-title {
+    text-align: center;
+    font-size: clamp(36px, 4vw, 52px);
+    color: #ffd000;
+    margin-bottom: 60px;
+    text-shadow: 0 0 20px rgba(255,208,0,0.45);
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background: rgba(17,17,17,0.96);
+    padding: 22px;
+    border-radius: 24px;
+    border: 1px solid rgba(255,208,0,0.16);
+    overflow: hidden;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 18px 40px rgba(255,208,0,0.18);
+}
+
+.card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 18px;
+}
+
+.card h3 {
+    margin-top: 22px;
+    font-size: 24px;
+    color: #ffd000;
+}
+
+.card p {
+    margin-top: 12px;
+    color: #d1d1d1;
+    line-height: 1.6;
+    font-size: 15px;
+    flex-grow: 1;
+}
+
+.price {
+    font-size: 24px;
+    margin: 18px 0 12px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.vip-box {
+    background: linear-gradient(145deg,#111,#1c1c1c);
+    padding: 50px;
+    text-align: center;
+    border-radius: 26px;
+    border: 2px solid rgba(255,208,0,0.32);
+    box-shadow: 0 0 48px rgba(255,208,0,0.16);
+    max-width: 820px;
+    margin: 0 auto;
+}
+
+.vip-box h2 {
+    font-size: 40px;
+    color: #ffd000;
+    margin-bottom: 20px;
+}
+
+.vip-box p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: #ddd;
+}
+
+.audio-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid #ffd000;
+    color: #ffd000;
+    padding: 10px 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    z-index: 9999;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: 0 0 15px rgba(255,208,0,0.2);
+    transition: 0.3s;
+}
+
+.audio-control:hover {
+    background: #ffd000;
+    color: black;
+}
+
+footer {
+    background: #0a0a0a;
+    padding: 35px;
+    text-align: center;
+    color: #999;
+    border-top: 1px solid rgba(255,208,0,0.15);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease-out;
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@media(max-width: 768px) {
+    header {
+        padding: 15px 4%;
+    }
+    .logo {
+        font-size: 24px;
+    }
+    .hero h1 {
+        font-size: 45px;
+    }
+    .hero p {
+        font-size: 16px;
+    }
+    nav a {
+        margin-left: 12px;
+        font-size: 13px;
+    }
+    section {
+        padding: 90px 4% 40px 4%;
+    }
+}
+</style>
+</head>
+</head>
+<body>
+
+<audio id="bg-music" loop>
+    <source src="background.mp4" type="audio/mpeg">
+</audio>
+<button class="audio-control" id="music-btn">🎵 Play Music</button>
+
+<header>
+    <div class="logo">Arab Online</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#shop">Shop</a>
+        <a href="#vip">VIP</a>
+        <a href="#whitelist">Whitelist</a>
+        <a href="#discord">Discord</a>
+    </nav>
+</header>
+
+<section class="hero" id="home">
+    <div class="hero-content">
+        <h1>Arab Online RP — San Andreas Garage</h1>
+        <p>Step into a smoother GTA experience with sharp San Andreas visuals, authentic car screenshots, and fast-access server shop items.</p>
+        <div class="hero-btns">
+            <a href="#shop" class="btn">Shop San Andreas Cars</a>
+            <a href="vip.html" class="btn" style="background:#ffd000;color:#000">Buy VIP</a>
+            <a href="https://discord.gg/8tEHmxZkT" target="_blank" class="btn">Join Discord</a>
+        </div>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title reveal">San Andreas Car Garage</h2>
+    <div class="cards">
+        <div class="card reveal">
+            <img src="https://cs4.gtaall.eu/screenshots/d4861/2014-05/original/5af8c224279ed57426170bc69692ef15138859a1/188142-gallery1.jpg" alt="Bullet GTA SA">
+            <h3>Bullet</h3>
+            <p>An iconic San Andreas supercar with sharp looks and race-ready speed, perfect for crossing Los Santos in style.</p>
+            <div class="price">Game classic</div>
+            <a href="shop.html#cars" class="btn">See Cars</a>
+        </div>
+        <div class="card reveal">
+            <img src="https://static.wikia.nocookie.net/gtawiki/images/e/e4/Infernus-GTASA-front.jpg/revision/latest?cb=20240107132240" alt="Infernus GTA SA">
+            <h3>Infernus</h3>
+            <p>A legendary supercar with exotic design and top-tier performance, built for high-speed action and premium roleplay.</p>
+            <div class="price">Legendary</div>
+            <a href="shop.html#cars" class="btn">See Cars</a>
+        </div>
+        <div class="card reveal">
+            <img src="https://static.wikia.nocookie.net/gtawiki/images/8/80/Sultan-GTASA-front.jpg/revision/latest/scale-to-width-down/1200?cb=20240108183242" alt="Sultan GTA SA">
+            <h3>Sultan</h3>
+            <p>This tuner favorite blends speed, control, and iconic San Andreas style for street racers and drift fans.</p>
+            <div class="price">Tuned power</div>
+            <a href="shop.html#cars" class="btn">See Cars</a>
+        </div>
+    </div>
+</section>
+
+<section id="shop">
+    <h2 class="section-title reveal">SERVER SHOP</h2>
+    <div class="cards">
+        <div class="card reveal">
+            <img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/turismo.jpg" alt="Turismo GTA SA">
+            <h3>VIP Turismo</h3>
+            <p>Exclusive San Andreas supercar with sharp speed and premium visual style.</p>
+            <div class="price">$1,200,000</div>
+            <a href="shop.html#cars" class="btn">Buy Now</a>
+        </div>
+
+        <div class="card reveal">
+            <img src="https://static.wikia.nocookie.net/gta/images/1/15/GTA_SA_CJ.png/revision/latest?cb=20131021144047" alt="CJ GTA San Andreas">
+            <h3>Mafia Outfit</h3>
+            <p>Luxury gang outfit from classic San Andreas roleplay, styled like CJ's toughest crews.</p>
+            <div class="price">$90,000</div>
+            <a href="shop.html#clothes" class="btn">Buy Now</a>
+        </div>
+
+        <div class="card reveal">
+            <img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/infernus.jpg" alt="Infernus GTA SA">
+            <h3>Infernus</h3>
+            <p>Fastest luxury sports car for elite street racers with iconic San Andreas acceleration.</p>
+            <div class="price">$500,000</div>
+            <a href="shop.html#cars" class="btn">Buy Now</a>
+        </div>
+
+        <div class="card reveal">
+            <img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/sultan.jpg" alt="Sultan GTA SA">
+            <h3>Sultan</h3>
+            <p>Perfect balance between speed and drift control, a classic tuner car from San Andreas.</p>
+            <div class="price">$250,000</div>
+            <a href="shop.html#cars" class="btn">Buy Now</a>
+        </div>
+
+        <div class="card reveal">
+            <img src="https://static.wikia.nocookie.net/gta/images/5/5a/San_Andreas_CJ.JPG/revision/latest?cb=20100408122633" alt="CJ GTA Outfit">
+            <h3>Street Outfit</h3>
+            <p>Classic San Andreas streetwear for your gang, inspired by the original GTA world.</p>
+            <div class="price">$50,000</div>
+            <a href="shop.html#clothes" class="btn">Buy Now</a>
+        </div>
+    </div>
+</section>
+
+<section id="vip">
+    <h2 class="section-title reveal">VIP MEMBERSHIP</h2>
+    <div class="vip-box reveal">
+        <h2>Become VIP</h2>
+        <p>Unlock exclusive commands, rare cars, premium houses, priority support and unique roleplay advantages.</p>
+        <br>
+        <a href="vip.html" class="btn" style="background:#ffd000;color:#000">Buy VIP</a>
+    </div>
+</section>
+
+<section id="whitelist">
+    <h2 class="section-title reveal">SERVER WHITELIST</h2>
+    <div class="vip-box reveal">
+        <h2>Apply For Whitelist</h2>
+        <p>Want to join the best Arabic GTA SAMP roleplay experience? Fill out the whitelist application and start your journey in Arab Online RP.</p>
+        <br>
+        <a href="https://forms.gle/vHqPXanak8wRuuK79" target="_blank" class="btn">APPLY NOW</a>
+    </div>
+</section>
+
+<section id="discord">
+    <h2 class="section-title reveal">JOIN OUR COMMUNITY</h2>
+    <div class="vip-box reveal" style="border-color: #5865F2;">
+        <h2 style="color: #5865F2;">Discord Server</h2>
+        <p>Meet other players, get live announcements, and chat with staff members.</p>
+        <br>
+        <a href="https://discord.gg/8tEHmxZkT" target="_blank" class="btn" style="background: #5865F2; color: white; box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);">JOIN DISCORD</a>
+    </div>
+    <!-- Facebook section removed -->
+</section>
+
+<footer>
+    © 2026 Arab Online RP - All Rights Reserved
+</footer>
+
+<script>
+// Scroll Reveal Script (Fixed to trigger instantly on load as well)
+window.addEventListener('scroll', reveal);
+window.addEventListener('DOMContentLoaded', reveal);
+
+function reveal(){
+    let reveals = document.querySelectorAll('.reveal');
+    for(let i = 0; i < reveals.length; i++){
+        let windowHeight = window.innerHeight;
+        let revealTop = reveals[i].getBoundingClientRect().top;
+        let revealPoint = 50; // slightly adjusted for quicker reveal
+
+        if(revealTop < windowHeight - revealPoint){
+            reveals[i].classList.add('active');
+        }
+    }
+}
+
+// Audio Autoplay Workaround Script
+const music = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-btn');
+
+musicBtn.addEventListener('click', () => {
+    if (music.paused) {
+        music.play();
+        musicBtn.innerHTML = "⏸ Mute Music";
+    } else {
+        music.pause();
+        musicBtn.innerHTML = "🎵 Play Music";
+    }
+});
+
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

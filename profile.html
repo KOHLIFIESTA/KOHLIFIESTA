@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+<style>
+body{margin:0;font-family:Poppins;background:#050505;color:white}
+.container{max-width:900px;margin:40px auto;padding:24px}
+.profile{display:flex;gap:20px;align-items:center}
+.avatar{width:120px;height:120px;border-radius:50%;background:#222;border:4px solid rgba(255,208,0,0.18)}
+.info h2{color:#ffd000;margin:0}
+.info p{color:#ddd}
+.form-row{margin-top:16px}
+.input{padding:10px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#eee;width:100%}
+.btn{background:#ffd000;color:black;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+.small{font-size:13px;color:#cfcfcf}
+.owner-btn{background:#ffd000;color:#000;padding:8px 10px;border-radius:8px;cursor:pointer;border:none}
+</style>
+</head>
+<body>
+<header style="padding:12px 20px;background:#000;display:flex;justify-content:space-between;align-items:center">
+<div style="color:#ffd000;font-weight:700">Arab Online - Profile</div>
+<nav>
+<a href="index.html" style="color:#fff;margin-right:12px">Home</a>
+<a href="shop.html" style="color:#fff">Shop</a>
+</nav>
+</header>
+<div class="container">
+  <div id="profileArea">
+    <div class="profile">
+      <div class="avatar" id="avatarEl"></div>
+      <div class="info">
+        <h2 id="username">-</h2>
+        <p>Points: <strong id="points">-</strong></p>
+        <p class="small" id="gameAccountText">No game account linked.</p>
+        <div class="form-row" id="linkRow">
+          <input id="gameName" class="input" placeholder="Enter your in-game name to link (one-time)">
+          <div style="height:8px"></div>
+          <button id="linkBtn" class="btn">Link Game Account (+250 pts)</button>
+        </div>
+
+        <div style="height:18px"></div>
+        <div style="border-top:1px solid rgba(255,255,255,0.04);padding-top:14px">
+          <h3 style="margin:0 0 8px">Buy Points</h3>
+          <p class="small">Redeem Ooredoo card codes to add points to your account.</p>
+          <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
+            <select id="pointAmount" class="input" style="max-width:160px">
+              <option value="100">100 points</option>
+              <option value="250">250 points</option>
+              <option value="500">500 points</option>
+              <option value="1000">1000 points</option>
+            </select>
+            <input id="ooredooCode" class="input" placeholder="Enter Ooredoo card code">
+            <button id="redeemBtn" class="btn">Redeem</button>
+          </div>
+          <div style="height:8px"></div>
+          <div id="redeemResult" class="small"></div>
+        </div>
+
+        <div style="height:12px"></div>
+        <button id="grantBtn" class="owner-btn" style="display:none">Grant 100000 Test Points</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+async function fetchJson(url, opts) {
+  const res = await fetch(url, opts);
+  if(!res.ok){ const err = await res.json().catch(()=>({error:res.statusText})); throw new Error(err.error||res.statusText); }
+  return res.json();
+}
+
+async function loadProfile(){
+  try{
+    const s = await fetchJson('/api/session');
+    if(!s.authenticated){ window.location.href = '/'; return; }
+    const user = s.user;
+    document.getElementById('username').textContent = user.username;
+    document.getElementById('points').textContent = user.points;
+    if(user.avatar){
+      const a = document.getElementById('avatarEl');
+      a.style.backgroundImage = `url(${user.avatar})`;
+      a.style.backgroundSize = 'cover';
+      a.style.backgroundPosition = 'center';
+    }
+    // Show linked game account if present
+    if(user.gameAccount){
+      document.getElementById('gameAccountText').textContent = 'Linked: ' + user.gameAccount;
+      document.getElementById('gameName').disabled = true;
+      document.getElementById('linkBtn').disabled = true;
+    } else {
+      document.getElementById('gameAccountText').textContent = 'No game account linked.';
+      document.getElementById('gameName').disabled = false;
+      document.getElementById('linkBtn').disabled = false;
+    }
+    // Show owner grant button only for owners
+    if(user.isOwner){
+      document.getElementById('grantBtn').style.display = 'inline-block';
+    } else {
+      document.getElementById('grantBtn').style.display = 'none';
+    }
+  }catch(err){ console.error(err); window.location.href = '/'; }
+}
+
+document.getElementById('linkBtn').addEventListener('click', async ()=>{
+  const name = document.getElementById('gameName').value.trim();
+  if(!name){ alert('Enter game name'); return; }
+  try{
+    const res = await fetchJson('/api/link-game', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ gameName: name }) });
+    alert('Game linked — you received 250 points!');
+    document.getElementById('points').textContent = res.points;
+    document.getElementById('gameAccountText').textContent = 'Linked: ' + res.gameAccount;
+    document.getElementById('gameName').disabled = true;
+    document.getElementById('linkBtn').disabled = true;
+  }catch(err){ alert(err.message); }
+});
+
+document.getElementById('redeemBtn').addEventListener('click', async ()=>{
+  const code = document.getElementById('ooredooCode').value.trim();
+  const points = document.getElementById('pointAmount').value;
+  if(!code){ alert('Enter Ooredoo code'); return; }
+  try{
+    const res = await fetchJson('/api/redeem-ooredoo', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ code, points }) });
+    document.getElementById('points').textContent = res.points;
+    document.getElementById('redeemResult').textContent = 'Redeemed successfully.';
+    document.getElementById('ooredooCode').value = '';
+  }catch(err){ document.getElementById('redeemResult').textContent = 'Error: ' + err.message; }
+});
+
+document.getElementById('grantBtn').addEventListener('click', async ()=>{
+  try{
+    const res = await fetchJson('/api/grant-owner-points', { method: 'POST' });
+    alert('Owner test points granted: ' + res.points);
+    document.getElementById('points').textContent = res.points;
+  }catch(err){ alert('Not owner or error: ' + err.message); }
+});
+
+loadProfile();
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

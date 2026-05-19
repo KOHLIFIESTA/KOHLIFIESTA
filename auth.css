@@ -1,0 +1,86 @@
+#authOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.94);
+  color: #f5f5f5;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  padding: 24px;
+}
+#authOverlay.visible {
+  display: flex;
+}
+#authOverlay .auth-card {
+  width: min(520px, 100%);
+  background: #0c0c0c;
+  border: 1px solid rgba(255, 208, 0, 0.18);
+  border-radius: 22px;
+  padding: 30px;
+  box-shadow: 0 0 55px rgba(0, 0, 0, 0.55);
+}
+#authOverlay h2 {
+  margin: 0 0 12px;
+  color: #ffd000;
+  font-size: 28px;
+}
+#authOverlay p {
+  margin: 0 0 20px;
+  line-height: 1.7;
+  color: #ccc;
+}
+#authOverlay .auth-input,
+#authOverlay .auth-submit {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 208, 0, 0.16);
+  padding: 14px 16px;
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+#authOverlay .auth-input {
+  background: #111;
+  color: #fff;
+}
+#authOverlay .auth-submit {
+  background: #ffd000;
+  color: #000;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+#authOverlay .auth-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+#authOverlay .auth-link {
+  color: #ffd000;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 14px;
+  padding: 0;
+}
+#authOverlay .auth-note {
+  color: #a8a8a8;
+  font-size: 14px;
+  margin-top: 10px;
+}
+body.auth-locked { overflow: hidden; }
+#authControls { display: flex; align-items: center; gap: 10px; }
+#authControls .auth-pill { display: inline-flex; align-items: center; gap: 6px; background: rgba(255, 208, 0, 0.15); color: #fff; padding: 10px 14px; border-radius: 999px; border: 1px solid rgba(255, 208, 0, 0.2); font-size: 14px; }
+#authControls button { cursor: pointer; border: none; border-radius: 10px; padding: 8px 12px; font-weight: 700; }
+#authControls .auth-button { background: #ffd000; color: #000; }
+#authControls .auth-button.light { background: #444; color: #fff; }
+#authControls .auth-button.link { background: transparent; color: #ffd000; border: 1px solid rgba(255, 208, 0, 0.2); }
+@media(max-width: 600px){
+  #authOverlay .auth-card { padding: 22px; }
+  #authOverlay h2 { font-size: 24px; }
+  #authControls { flex-wrap: wrap; }
+}
+
+/* Removed Facebook-specific styles (branding removed) */

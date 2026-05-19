@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>GTA San Andreas Shop</title>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="auth.css">
+	<style>
+		:root{--bg:#050505;--panel:#131313;--accent:#ffd000;--accent-soft:rgba(255,208,0,0.15)}
+		body{margin:0;font-family:Poppins,system-ui,Segoe UI,Roboto,Arial;background:radial-gradient(circle at top,#222 0%,#050505 35%,#040405 100%);color:#eee;}
+		header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:rgba(0,0,0,0.86);border-bottom:1px solid rgba(255,208,0,0.14);backdrop-filter:blur(10px);}
+		header a{color:#fff;text-decoration:none;margin-left:14px;transition:color .2s ease;}
+		header a:hover{color:#ffd000;}
+		.container{padding:28px;max-width:1100px;margin:0 auto;}
+		.tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;}
+		.tab{background:#111;color:#ddd;padding:12px 16px;border-radius:14px;cursor:pointer;border:1px solid rgba(255,255,255,0.04);transition:transform .25s ease,background .25s ease;}
+		.tab:hover{transform:translateY(-2px);}
+		.tab.active{background:var(--accent);color:#000;box-shadow:0 0 18px rgba(255,208,0,0.2);}
+		.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+		.item{background:var(--panel);padding:16px;border-radius:18px;border:1px solid rgba(255,208,0,0.08);display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease;}
+		.item:hover{transform:translateY(-8px);box-shadow:0 16px 30px rgba(255,208,0,0.12);}
+		.item img{width:100%;height:170px;object-fit:cover;border-radius:12px;background:#222;transition:transform .3s ease;}
+		.item:hover img{transform:scale(1.02);}
+		.item h4{color:var(--accent);margin:14px 0 8px;}
+		.desc{color:#cfcfcf;flex-grow:1;font-size:14px;line-height:1.65;}
+		.price{font-weight:700;color:#fff;margin:12px 0;font-size:16px;}
+		.buy{background:var(--accent);color:#000;padding:12px;border-radius:10px;border:none;cursor:pointer;font-weight:700;transition:transform .2s ease,box-shadow .2s ease;}
+		.buy:hover{transform:translateY(-2px);box-shadow:0 12px 20px rgba(255,208,0,0.2);}
+		.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:16px;}
+		.modal{background:#0e0e0e;padding:24px;border-radius:16px;width:420px;max-width:100%;border:1px solid rgba(255,208,0,0.18);box-shadow:0 18px 40px rgba(0,0,0,0.45);}
+		.modal h3{color:var(--accent);margin:0 0 10px;}
+		.modal .row{margin:12px 0;}
+		.radio{display:flex;gap:10px;align-items:center;color:#e2e2e2;}
+		.code-input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:#141414;color:#eee;}
+		.ooredoo-logo{width:20px;height:20px;margin-right:8px;vertical-align:middle}
+		.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
+		.link-btn{background:#5865F2;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;}
+		footer{padding:18px;text-align:center;color:#999;margin-top:28px;border-top:1px solid rgba(255,208,0,0.08);}
+		@media(max-width:520px){.item img{height:120px;}}
+	</style>
+</head>
+<body>
+
+<header>
+		<div style="color:var(--accent);font-weight:700;font-size:20px">San Andreas Shop</div>
+		<nav>
+			<a href="index.html">Home</a>
+			<a href="vip.html">VIP</a>
+			<a href="whitelist.html">Whitelist</a>
+			<a href="discord.html">Discord</a>
+		</nav>
+</header>
+
+<main class="container">
+	<h1 style="color:var(--accent);margin:10px 0 22px">Shop Categories</h1>
+
+	<div class="tabs" id="categoryTabs">
+		<div class="tab" data-cat="cars">Cars</div>
+		<div class="tab" data-cat="clothes">Clothes</div>
+		<div class="tab" data-cat="houses">Houses</div>
+		<div class="tab" data-cat="guns">Guns</div>
+		<div class="tab" data-cat="islands">Islands</div>
+		<div class="tab" data-cat="garages">Garages</div>
+		<div class="tab" data-cat="points">Points Shop</div>
+	</div>
+
+	<section id="cars" class="category">
+		<div class="grid">
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/bullet.jpg" alt="Bullet GTA SA">
+				<h4>Bullet</h4>
+				<div class="desc">Bullet is a high-performance supercar in GTA San Andreas, known for its explosive speed, sharp handling, and aggressive street style.</div>
+				<div class="price">$5,000,000 / 10dt</div>
+				<button class="buy" data-name="Bullet" data-price="$5,000,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/bullet.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/infernus.jpg" alt="Infernus GTA SA">
+				<h4>Infernus</h4>
+				<div class="desc">Infernus is a legendary supercar in San Andreas with exotic looks, powerful acceleration, and top-tier speed for races and highway runs.</div>
+				<div class="price">$3,550,000 / 6dt</div>
+				<button class="buy" data-name="Infernus" data-price="$3,550,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/infernus.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/turismo.jpg" alt="Turismo GTA SA">
+				<h4>Turismo</h4>
+				<div class="desc">Turismo is a streamlined supercar with luxury appeal, perfect for San Andreas players who want explosive acceleration and show-off style.</div>
+				<div class="price">$3,900,000 / 7dt</div>
+				<button class="buy" data-name="Turismo" data-price="$3,900,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/turismo.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/banshee.jpg" alt="Banshee GTA SA">
+				<h4>Banshee</h4>
+				<div class="desc">Banshee is a classic San Andreas street racer, built for agile handling, strong acceleration, and memorable sports-car sound.</div>
+				<div class="price">$2,150,000 / 5dt</div>
+				<button class="buy" data-name="Banshee" data-price="$2,150,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/banshee.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/cheetah.jpg" alt="Cheetah GTA SA">
+				<h4>Cheetah</h4>
+				<div class="desc">Cheetah delivers high-speed performance with a sleek body and excellent cornering, making it a favorite in San Andreas.</div>
+				<div class="price">$2,900,000 / 6dt</div>
+				<button class="buy" data-name="Cheetah" data-price="$2,900,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/cheetah.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/sultan.jpg" alt="Sultan GTA SA">
+				<h4>Sultan</h4>
+				<div class="desc">Sultan is the iconic tuner sedan of San Andreas, delivering excellent drift control and a sporty street look.</div>
+				<div class="price">$1,100,000 / 4dt</div>
+				<button class="buy" data-name="Sultan" data-price="$1,100,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/sultan.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/stallion.jpg" alt="Stallion GTA SA">
+				<h4>Stallion</h4>
+				<div class="desc">Stallion is a muscle car icon in San Andreas, great for powerful drifts, strong acceleration, and a timeless retro look.</div>
+				<div class="price">$980,000 / 3dt</div>
+				<button class="buy" data-name="Stallion" data-price="$980,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/stallion.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/sandking.jpg" alt="Sandking GTA SA">
+				<h4>Sandking</h4>
+				<div class="desc">Sandking is the iconic off-road truck of San Andreas, built for sandy hills, desert runs, and rugged adventures.</div>
+				<div class="price">$1,700,000 / 5dt</div>
+				<button class="buy" data-name="Sandking" data-price="$1,700,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/sandking.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/supergt.jpg" alt="Super GT GTA SA">
+				<h4>Super GT</h4>
+				<div class="desc">Super GT blends luxury and speed, making it one of the smoothest and most elegant San Andreas road cars.</div>
+				<div class="price">$2,300,000 / 5dt</div>
+				<button class="buy" data-name="Super GT" data-price="$2,300,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/supergt.jpg">Buy</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="clothes" class="category" style="display:none">
+		<div class="grid">
+			<div class="item">
+				<img src="placeholder-cloth-1.jpg" alt="Clothes">
+				<h4>Mafia Outfit</h4>
+				<div class="desc">Placeholder description for Mafia Outfit.</div>
+				<div class="price">$90,000</div>
+				<button class="buy" data-name="Mafia Outfit" data-price="$90,000" data-img="placeholder-cloth-1.jpg">Buy</button>
+			</div>
+
+			<div class="item">
+				<img src="placeholder-cloth-2.jpg" alt="Clothes">
+				<h4>Street Outfit</h4>
+				<div class="desc">Placeholder description for Street Outfit.</div>
+				<div class="price">$50,000</div>
+				<button class="buy" data-name="Street Outfit" data-price="$50,000" data-img="placeholder-cloth-2.jpg">Buy</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="houses" class="category" style="display:none">
+		<div class="grid">
+			<div class="item">
+				<img src="placeholder-house-1.jpg" alt="House">
+				<h4>Small House</h4>
+				<div class="desc">Placeholder description for Small House.</div>
+				<div class="price">$350,000</div>
+				<button class="buy" data-name="Small House" data-price="$350,000" data-img="placeholder-house-1.jpg">Buy</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="guns" class="category" style="display:none">
+		<div class="grid">
+			<div class="item">
+				<img src="placeholder-gun-1.jpg" alt="Gun">
+				<h4>AK-47</h4>
+				<div class="desc">Placeholder description for AK-47.</div>
+				<div class="price">$15,000</div>
+				<button class="buy" data-name="AK-47" data-price="$15,000" data-img="placeholder-gun-1.jpg">Buy</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="islands" class="category" style="display:none">
+		<div class="grid">
+			<div class="item">
+				<img src="placeholder-island-1.jpg" alt="Island">
+				<h4>Private Island</h4>
+				<div class="desc">Placeholder description for Private Island.</div>
+				<div class="price">$2,500,000</div>
+				<button class="buy" data-name="Private Island" data-price="$2,500,000" data-img="placeholder-island-1.jpg">Buy</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="garages" class="category" style="display:none">
+		<div class="grid">
+			<div class="item">
+				<img src="placeholder-garage-1.jpg" alt="Garage">
+				<h4>Large Garage</h4>
+				<div class="desc">Placeholder description for Large Garage.</div>
+				<div class="price">$120,000</div>
+				<button class="buy" data-name="Large Garage" data-price="$120,000" data-img="placeholder-garage-1.jpg">Buy</button>
+			</div>
+		</div>
+	</section>
+
+	<section id="points" class="category" style="display:none">
+		<h2 style="color:var(--accent);margin-top:0">Points Shop</h2>
+		<p style="color:#cfcfcf">Buy items using your points balance. Earn points by inviting friends — share your referral link.</p>
+		<div class="grid">
+			<div class="item">
+				<img src="placeholder-vip-week.jpg" alt="VIP week">
+				<h4>Basic VIP — 1 Week</h4>
+				<div class="desc">Gives VIP perks for 7 in-game days. (Placeholder)</div>
+				<div class="price">500 points</div>
+				<button class="buy-points" data-name="Basic VIP (1 week)" data-cost="500">Buy with points</button>
+			</div>
+
+			<div class="item">
+				<img src="placeholder-drug.jpg" alt="Crack drug">
+				<h4>Crack Drug (game item)</h4>
+				<div class="desc">Placeholder in-game consumable.
+				</div>
+				<div class="price">150 points</div>
+				<button class="buy-points" data-name="Crack Drug" data-cost="150">Buy with points</button>
+			</div>
+
+			<div class="item">
+				<img src="placeholder-bike.jpg" alt="Sanchez bike">
+				<h4>Sanchez Bike</h4>
+				<div class="desc">Two-wheeled offroad bike for missions and stunts.</div>
+				<div class="price">250 points</div>
+				<button class="buy-points" data-name="Sanchez Bike" data-cost="250">Buy with points</button>
+			</div>
+		</div>
+		<div style="margin-top:14px;color:#cfcfcf">
+			<strong>Invite reward:</strong> When someone signs up using your referral link, you get 100 points.
+		</div>
+	</section>
+
+</main>
+
+<!-- Payment Modal -->
+<div class="modal-backdrop" id="modalBackdrop">
+	<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+		<h3 id="modalTitle">Buy Item</h3>
+		<div id="modalItemInfo" class="row"></div>
+
+		<div class="row">
+			<label class="radio"><input type="radio" name="payMethod" value="credit" checked> Buy with in-game credit money</label>
+		</div>
+		<div class="row">
+			<label class="radio"><input type="radio" name="payMethod" value="ooredoo"> <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Ooredoo_logo.svg" class="ooredoo-logo" alt="Ooredoo">Buy with an Ooredoo card code</label>
+		</div>
+
+		<div id="ooredooSection" style="display:none;margin-top:10px">
+			<input id="cardCode" class="code-input" placeholder="Enter Ooredoo card code here">
+		</div>
+
+		<div class="modal-actions">
+			<button id="cancelBtn" class="buy" style="background:#444;color:#fff">Cancel</button>
+			<button id="proceedBtn" class="buy">Proceed</button>
+		</div>
+	</div>
+</div>
+
+<footer>
+	© 2026 Arab Online RP - Shop
+</footer>
+
+<script>
+	// Tabs
+	const tabs = document.querySelectorAll('.tab');
+	const categories = document.querySelectorAll('.category');
+
+	function showCategory(id){
+		categories.forEach(s=> s.style.display = (s.id === id) ? 'block' : 'none');
+		tabs.forEach(t=> t.classList.toggle('active', t.dataset.cat === id));
+	}
+
+	tabs.forEach(t=> t.addEventListener('click', ()=> showCategory(t.dataset.cat)));
+
+	// If URL hash present, open that category
+	const hash = location.hash.replace('#','');
+	if(hash){
+		const tab = document.querySelector(`.tab[data-cat="${hash}"]`);
+		if(tab) showCategory(hash);
+	} else {
+		// default
+		showCategory('cars');
+	}
+
+	async function fetchJson(url, options = {}){
+		const response = await fetch(url, options);
+		if(!response.ok){
+			const error = await response.json().catch(()=>({ error: response.statusText }));
+			throw new Error(error.error || response.statusText);
+		}
+		return response.json();
+	}
+
+	async function buyWithPoints(itemName, cost){
+		try {
+			const result = await fetchJson('/api/buy-points', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ itemName, cost })
+			});
+			alert(`You bought ${result.itemName} for ${cost} points.`);
+			const session = await auth.getSession();
+			auth.renderAuthControls(session);
+		} catch (err) {
+			if (err.message.includes('Not authenticated')) {
+				alert('Please sign in to purchase with points.');
+				auth.showAuthOverlay({ requireLogin: true });
+				return;
+			}
+			alert(err.message);
+		}
+	}
+
+	async function requireAuth() {
+		if (!window.auth) return false;
+		const session = await auth.getSession();
+		if (!session.authenticated) {
+			auth.showAuthOverlay({ requireLogin: true });
+			return false;
+		}
+		return true;
+	}
+
+	// Wire buy-points buttons
+	document.querySelectorAll('.buy-points').forEach(b=> b.addEventListener('click', async ()=>{
+		const name = b.dataset.name; const cost = parseInt(b.dataset.cost,10);
+		if (!(await requireAuth())) return;
+		buyWithPoints(name,cost);
+	}));
+
+	/* ---------------------- Existing Paid Modal logic (unchanged) */
+	const modalBackdrop = document.getElementById('modalBackdrop');
+	const modalItemInfo = document.getElementById('modalItemInfo');
+	const proceedBtn = document.getElementById('proceedBtn');
+	const cancelBtn = document.getElementById('cancelBtn');
+	const ooredooSection = document.getElementById('ooredooSection');
+	const cardCodeInput = document.getElementById('cardCode');
+
+	let currentItem = null;
+
+	document.querySelectorAll('.buy[data-name]').forEach(btn=>{
+		btn.addEventListener('click', async (e)=>{
+			if (!(await requireAuth())) return;
+			const name = btn.dataset.name;
+			const price = btn.dataset.price;
+			const img = btn.dataset.img;
+			currentItem = {name,price,img};
+			modalItemInfo.innerHTML = `<strong style="color:#fff">${name}</strong><div style="color:#cfcfcf">Price: ${price}</div>`;
+			modalBackdrop.style.display = 'flex';
+			// reset
+			document.querySelector('input[name="payMethod"][value="credit"]').checked = true;
+			ooredooSection.style.display = 'none';
+			cardCodeInput.value = '';
+		});
+	});
+
+	// payment method toggle
+	document.querySelectorAll('input[name="payMethod"]').forEach(r=> r.addEventListener('change', ()=>{
+		ooredooSection.style.display = document.querySelector('input[name="payMethod"]:checked').value === 'ooredoo' ? 'block' : 'none';
+	}));
+
+	cancelBtn.addEventListener('click', ()=> modalBackdrop.style.display = 'none');
+
+	window.addEventListener('DOMContentLoaded', async () => {
+		if (window.auth) {
+			const session = await auth.getSession();
+			if (!session.authenticated) {
+				auth.showAuthOverlay({ requireLogin: true });
+			}
+		}
+	});
+
+	proceedBtn.addEventListener('click', ()=>{
+		const method = document.querySelector('input[name="payMethod"]:checked').value;
+		if(!currentItem) return;
+
+		if(method === 'credit'){
+			// Redirect to Discord invite — server staff can create a ticket once user joins
+			const discordInvite = 'https://discord.gg/8tEHmxZkT';
+			// open in new tab
+			window.open(discordInvite, '_blank');
+			modalBackdrop.style.display = 'none';
+			alert('You will be redirected to Discord to create a support ticket.');
+		} else {
+			const code = cardCodeInput.value.trim();
+			if(!code){ alert('Please enter the Ooredoo card code.'); return; }
+			// Prepare an email to send the code — opens user's mail client with prefilled email
+			const to = 'payments@example.com'; // <-- change to your real email
+			const subject = encodeURIComponent(`Ooredoo payment - ${currentItem.name}`);
+			const body = encodeURIComponent(`Item: ${currentItem.name}\nPrice: ${currentItem.price}\nCard code: ${code}\nPlease process this payment and deliver the item.`);
+			window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+			modalBackdrop.style.display = 'none';
+		}
+	});
+
+	// Close modal when clicking backdrop
+	modalBackdrop.addEventListener('click', (e)=>{ if(e.target === modalBackdrop) modalBackdrop.style.display = 'none'; });
+
+</script>
+<script src="auth.js"></script>
+
+</body>
+</html>

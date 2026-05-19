@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>VIP</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+<style>
+body{margin:0;font-family:Poppins;background:#050505;color:white;}
+nav{display:flex;justify-content:center;gap:20px;padding:20px;background:#000;}
+nav a{color:white;text-decoration:none;}
+nav a:hover{color:#ffd000;}
+.box{text-align:center;padding:80px;}
+h1{color:#ffd000;}
+.btn{background:#ffd000;color:black;padding:15px;border-radius:10px;text-decoration:none;font-weight:bold;}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="vip.html">VIP</a>
+<a href="whitelist.html">Whitelist</a>
+<a href="discord.html">Discord</a>
+</nav>
+
+<div class="container">
+  <h1 class="title">VIP Subscriptions</h1>
+  <p class="subtitle">Choose a plan that fits your style. Secure purchases via Discord support or Ooredoo card codes. All purchases require sign-in.</p>
+
+  <div class="plans" id="plans">
+    <div class="card" data-plan="bronze">
+      <div class="badge">Bronze</div>
+      <h3 style="margin:0">Basic Starter Pack ⚔️</h3>
+      <div class="price">5dt / week · 18dt / month</div>
+      <div class="features">
+        <div class="feature yes"><div class="icon">✓</div><div>100 points</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>VIP melee weapons</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>1 VIP car</div></div>
+        <div class="feature no"><div class="icon">✖</div><div>Garage access</div></div>
+        <div class="feature no"><div class="icon">✖</div><div>VIP skins</div></div>
+      </div>
+      <div class="cta"><button class="btn-cta" onclick="buyPlan('bronze')">Buy Bronze</button></div>
+    </div>
+
+    <div class="card" data-plan="silver">
+      <div class="badge">Silver</div>
+      <h3 style="margin:0">Advanced Player Pack 🚗</h3>
+      <div class="price">10dt / week · 40dt / month</div>
+      <div class="features">
+        <div class="feature yes"><div class="icon">✓</div><div>500 points</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>VIP guns</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>VIP cars + garage</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>Limited skins</div></div>
+        <div class="feature no"><div class="icon">✖</div><div>Gold name</div></div>
+      </div>
+      <div class="cta"><button class="btn-cta" onclick="buyPlan('silver')">Buy Silver</button></div>
+    </div>
+
+    <div class="card" data-plan="gold">
+      <div class="badge">Gold</div>
+      <h3 style="margin:0">Premium All-Access ✨</h3>
+      <div class="price">15dt / week · 50dt / month</div>
+      <div class="features">
+        <div class="feature yes"><div class="icon">✓</div><div>1000 points</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>All VIP weapons & cars</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>All garages & skins</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>Unlimited global chat</div></div>
+        <div class="feature yes"><div class="icon">✓</div><div>Free first week (one-time)</div></div>
+      </div>
+      <div class="cta"><button class="btn-cta" onclick="buyPlan('gold')">Buy Gold</button></div>
+    </div>
+  </div>
+
+  <p class="note">Payments: Choose `credit` to open a Discord support ticket or `ooredoo` to provide an Ooredoo card code. For Ooredoo, you'll be asked to enter the code which is emailed to our payments team for manual processing.</p>
+</div>
+
+<script>
+async function buyPlan(plan){
+  if (!window.auth) { alert('Auth not loaded'); return; }
+  const ok = await auth.requireAuth();
+  if (!ok) return;
+  const planName = plan.charAt(0).toUpperCase() + plan.slice(1);
+  const method = prompt(`Buy ${planName}: type 'credit' to open a Discord ticket, or 'ooredoo' to provide an Ooredoo card code`);
+  if (!method) return;
+  if (method.toLowerCase() === 'credit'){
+    window.open('https://discord.gg/8tEHmxZkT','_blank');
+    alert('You will be redirected to Discord to create a support ticket for subscription purchase.');
+    return;
+  }
+  if (method.toLowerCase() === 'ooredoo'){
+    const code = prompt('Enter Ooredoo card code:');
+    if (!code) return alert('Cancelled');
+    const to = 'payments@example.com';
+    const subject = encodeURIComponent(`Ooredoo subscription - ${planName}`);
+    const body = encodeURIComponent(`Plan: ${planName}\nPlease process subscription and grant VIP.\nCode: ${code}`);
+    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    return;
+  }
+  alert('Unknown payment method');
+}
+</script>
+<script src="auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Whitelist</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+<style>
+body{margin:0;font-family:Poppins;background:#050505;color:white;}
+nav{display:flex;justify-content:center;gap:20px;padding:20px;background:#000;}
+nav a{color:white;text-decoration:none;}
+nav a:hover{color:#ffd000;}
+.whitelist-box{max-width:720px;margin:0 auto;padding:20px;}
+.whitelist-box label{display:block;color:#ddd;margin:16px 0 8px;font-weight:600;}
+.whitelist-box input,
+.whitelist-box textarea{width:100%;border:1px solid rgba(255,255,255,0.12);background:#111;color:#fff;padding:12px 14px;border-radius:12px;resize:vertical;}
+.whitelist-box textarea{min-height:180px;}
+.whitelist-box .btn{margin-top:18px;}
+h1{text-align:center;color:#ffd000;margin:40px;}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="index.html">Home</a>
+<a href="shop.html">Shop</a>
+<a href="vip.html">VIP</a>
+<a href="whitelist.html">Whitelist</a>
+<a href="discord.html">Discord</a>
+</nav>
+
+<h1>WHITELIST APPLICATION</h1>
+<div class="whitelist-box">
+  <form id="whitelistForm">
+    <label>Name</label>
+    <input type="text" name="name" required placeholder="Your full name">
+    <label>Discord</label>
+    <input type="text" name="discord" required placeholder="Discord username#1234">
+    <label>Email (optional)</label>
+    <input type="email" name="email" placeholder="you@example.com">
+    <label>Why should you be whitelisted?</label>
+    <textarea name="reason" required placeholder="Tell us why you should join"></textarea>
+    <button type="submit" class="btn">Submit Application</button>
+    <div id="whitelistMessage" style="margin-top:16px;color:#cfcfcf;"></div>
+  </form>
+</div>
+
+<script>
+  document.getElementById('whitelistForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const data = {
+      name: form.name.value.trim(),
+      discord: form.discord.value.trim(),
+      email: form.email.value.trim(),
+      reason: form.reason.value.trim()
+    };
+
+    if (!data.name || !data.discord || !data.reason) {
+      document.getElementById('whitelistMessage').textContent = 'Please fill in all required fields.';
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/whitelist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await response.json();
+      if (response.ok && result.ok) {
+        form.reset();
+        document.getElementById('whitelistMessage').textContent = 'Application submitted successfully!';
+      } else {
+        document.getElementById('whitelistMessage').textContent = result.error || 'Submission failed.';
+      }
+    } catch (error) {
+      document.getElementById('whitelistMessage').textContent = 'Unable to submit right now.';
+    }
+  });
+</script>
+<script src="auth.js"></script>
+</body>
+</html>
