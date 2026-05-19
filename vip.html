@@ -1,105 +1,356 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>VIP</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="auth.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIP Memberships | Traplife</title>
 <style>
-body{margin:0;font-family:Poppins;background:#050505;color:white;}
-nav{display:flex;justify-content:center;gap:20px;padding:20px;background:#000;}
-nav a{color:white;text-decoration:none;}
-nav a:hover{color:#ffd000;}
-.box{text-align:center;padding:80px;}
-h1{color:#ffd000;}
-.btn{background:#ffd000;color:black;padding:15px;border-radius:10px;text-decoration:none;font-weight:bold;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+font-family:Arial,sans-serif;
+background:url('https://img1.wallspic.com/crops/0/1/7/9/4/149710/149710-fraicheur-tourisme-lunettes-lhomme-jeu_daventure-3840x2160.jpg') center/cover no-repeat fixed;
+min-height:100vh;
+color:white;
+}
+.overlay{
+background:rgba(0,0,0,0.75);
+min-height:100vh;
+padding:50px;
+}
+h1{
+text-align:center;
+font-size:60px;
+margin-bottom:10px;
+color:#ffd000;
+text-shadow:0 0 20px #ffd000;
+display:flex;
+align-items:center;
+justify-content:center;
+gap:15px;
+animation: h1Float 3s ease-in-out infinite;
+}
+
+h1 img {
+    height: 70px;
+    width: 70px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255,208,0,0.6));
+    animation: h1Bounce 2s ease-in-out infinite;
+}
+
+@keyframes h1Float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes h1Bounce {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.15) rotate(5deg); }
+}
+.subtitle{
+text-align:center;
+margin-bottom:50px;
+font-size:20px;
+}
+.container{
+display:flex;
+gap:30px;
+justify-content:center;
+flex-wrap:wrap;
+}
+.card{
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,208,0,0.5);
+border-radius:25px;
+padding:30px;
+width:320px;
+transition:0.5s;
+box-shadow:0 0 30px rgba(255,208,0,0.2);
+position:relative;
+overflow:hidden;
+animation: cardPop 0.6s ease;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,208,0,0.2), transparent);
+    animation: shimmerVip 2.5s infinite;
+}
+
+.card:hover{
+transform:translateY(-15px) scale(1.05);
+box-shadow:0 0 50px rgba(255,208,0,0.8);
+}
+
+@keyframes cardPop {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmerVip {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+.price{
+font-size:45px;
+color:#ffd000;
+margin:20px 0;
+font-weight:bold;
+}
+ul{
+list-style:none;
+line-height:2;
+margin-bottom:20px;
+}
+button{
+width:100%;
+padding:15px;
+border:none;
+border-radius:15px;
+background:#ffd000;
+font-size:18px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+button.secondary{
+  width:auto;
+  padding:12px 20px;
+  background:rgba(255,255,255,0.12);
+  color:#fff;
+  border:1px solid rgba(255,208,0,0.35);
+}
+button.secondary:hover{
+  background:rgba(255,255,255,0.18);
+}
+button:hover{
+background:white;
+}
+.button-row{
+  display:flex;
+  justify-content:center;
+  margin-bottom:24px;
+}
+.subprice{
+  color:#ffeb99;
+  margin-top:-10px;
+  margin-bottom:18px;
+  font-size:0.98rem;
+}
+.purchase-panel{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,0.78);
+  z-index:50;
+}
+.purchase-panel.hidden{
+  display:none;
+}
+.panel-card{
+  width:min(420px,100%);
+  background:rgba(20,20,20,0.96);
+  border:1px solid rgba(255,208,0,0.25);
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 25px 70px rgba(0,0,0,0.45);
+}
+.panel-card h3{
+  margin-bottom:18px;
+  color:#ffd000;
+}
+.panel-row{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:18px;
+}
+.panel-row label{
+  color:#d2c88b;
+  font-weight:600;
+}
+.panel-row input,
+.panel-row select{
+  width:100%;
+  padding:14px 16px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.06);
+  color:#f7f5e8;
+}
+.panel-price{
+  margin-bottom:18px;
+  color:#fff;
+  font-weight:700;
+}
+.panel-actions{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.message{
+  margin-top:14px;
+  min-height:22px;
+  color:#b6ffb0;
+}
 </style>
 </head>
 <body>
-
-<nav>
-<a href="index.html">Home</a>
-<a href="shop.html">Shop</a>
-<a href="vip.html">VIP</a>
-<a href="whitelist.html">Whitelist</a>
-<a href="discord.html">Discord</a>
-</nav>
-
-<div class="container">
-  <h1 class="title">VIP Subscriptions</h1>
-  <p class="subtitle">Choose a plan that fits your style. Secure purchases via Discord support or Ooredoo card codes. All purchases require sign-in.</p>
-
-  <div class="plans" id="plans">
-    <div class="card" data-plan="bronze">
-      <div class="badge">Bronze</div>
-      <h3 style="margin:0">Basic Starter Pack ⚔️</h3>
-      <div class="price">5dt / week · 18dt / month</div>
-      <div class="features">
-        <div class="feature yes"><div class="icon">✓</div><div>100 points</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>VIP melee weapons</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>1 VIP car</div></div>
-        <div class="feature no"><div class="icon">✖</div><div>Garage access</div></div>
-        <div class="feature no"><div class="icon">✖</div><div>VIP skins</div></div>
-      </div>
-      <div class="cta"><button class="btn-cta" onclick="buyPlan('bronze')">Buy Bronze</button></div>
-    </div>
-
-    <div class="card" data-plan="silver">
-      <div class="badge">Silver</div>
-      <h3 style="margin:0">Advanced Player Pack 🚗</h3>
-      <div class="price">10dt / week · 40dt / month</div>
-      <div class="features">
-        <div class="feature yes"><div class="icon">✓</div><div>500 points</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>VIP guns</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>VIP cars + garage</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>Limited skins</div></div>
-        <div class="feature no"><div class="icon">✖</div><div>Gold name</div></div>
-      </div>
-      <div class="cta"><button class="btn-cta" onclick="buyPlan('silver')">Buy Silver</button></div>
-    </div>
-
-    <div class="card" data-plan="gold">
-      <div class="badge">Gold</div>
-      <h3 style="margin:0">Premium All-Access ✨</h3>
-      <div class="price">15dt / week · 50dt / month</div>
-      <div class="features">
-        <div class="feature yes"><div class="icon">✓</div><div>1000 points</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>All VIP weapons & cars</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>All garages & skins</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>Unlimited global chat</div></div>
-        <div class="feature yes"><div class="icon">✓</div><div>Free first week (one-time)</div></div>
-      </div>
-      <div class="cta"><button class="btn-cta" onclick="buyPlan('gold')">Buy Gold</button></div>
-    </div>
-  </div>
-
-  <p class="note">Payments: Choose `credit` to open a Discord support ticket or `ooredoo` to provide an Ooredoo card code. For Ooredoo, you'll be asked to enter the code which is emailed to our payments team for manual processing.</p>
+<div class="overlay">
+<h1>💎 VIP MEMBERSHIPS <img src="logo_v2.avif" alt="Traplife"></h1>
+<p class="subtitle">Unlock premium rewards and dominate San Andreas.</p>
+<div class="button-row">
+  <button id="homeButton" class="secondary">🏠 Back to Home</button>
 </div>
 
+<div class="container">
+
+<div class="card">
+<h2>⭐ Silver VIP</h2>
+<div class="price">Silver VIP</div>
+<div class="subprice">5 DT/week • 20 DT/month</div>
+<ul>
+<li>✅ VIP Chat</li>
+<li>✅ Exclusive Cars</li>
+<li>✅ Priority Queue</li>
+<li>❌ Monthly Rewards</li>
+</ul>
+<button class="buy-button" data-tier="Silver">Buy Now</button>
+</div>
+
+<div class="card">
+<h2>🔥 Gold VIP</h2>
+<div class="price">Gold VIP</div>
+<div class="subprice">10 DT/week • 35 DT/month</div>
+<ul>
+<li>✅ VIP Houses</li>
+<li>✅ Monthly Rewards</li>
+<li>✅ Premium Cars</li>
+<li>✅ Faster Support</li>
+</ul>
+<button class="buy-button" data-tier="Gold">Buy Now</button>
+</div>
+
+<div class="card">
+<h2>👑 Ultimate VIP</h2>
+<div class="price">Ultimate VIP</div>
+<div class="subprice">15 DT/week • 45 DT/month</div>
+<ul>
+<li>✅ Private Island</li>
+<li>✅ Ultimate Rewards</li>
+<li>✅ Rare Cars</li>
+<li>✅ Premium Features</li>
+</ul>
+<button class="buy-button" data-tier="Ultimate">Buy Now</button>
+</div>
+
+</div>
+
+<div id="purchasePanel" class="purchase-panel hidden">
+  <div class="panel-card">
+    <h3 id="purchaseTitle">Purchase VIP</h3>
+    <div class="panel-row">
+      <label for="periodSelect">Select Duration</label>
+      <select id="periodSelect"></select>
+    </div>
+    <div class="panel-row">
+      <label for="vipCodeInput">Ooredoo Code</label>
+      <input id="vipCodeInput" placeholder="Enter your Ooredoo code">
+    </div>
+    <div class="panel-price">Price: <strong id="purchasePrice"></strong></div>
+    <div class="panel-actions">
+      <button id="confirmPurchaseButton">Confirm Purchase</button>
+      <button id="cancelPurchaseButton" class="secondary">Cancel</button>
+    </div>
+    <div class="message" id="vipMessage"></div>
+  </div>
+</div>
+</div>
+</div>
 <script>
-async function buyPlan(plan){
-  if (!window.auth) { alert('Auth not loaded'); return; }
-  const ok = await auth.requireAuth();
-  if (!ok) return;
-  const planName = plan.charAt(0).toUpperCase() + plan.slice(1);
-  const method = prompt(`Buy ${planName}: type 'credit' to open a Discord ticket, or 'ooredoo' to provide an Ooredoo card code`);
-  if (!method) return;
-  if (method.toLowerCase() === 'credit'){
-    window.open('https://discord.gg/8tEHmxZkT','_blank');
-    alert('You will be redirected to Discord to create a support ticket for subscription purchase.');
-    return;
+  const vipPrices = {
+    Silver: { week: 5, month: 20 },
+    Gold: { week: 10, month: 35 },
+    Ultimate: { week: 15, month: 45 }
+  };
+
+  const purchasePanel = document.getElementById('purchasePanel');
+  const purchaseTitle = document.getElementById('purchaseTitle');
+  const purchasePrice = document.getElementById('purchasePrice');
+  const periodSelect = document.getElementById('periodSelect');
+  const vipCodeInput = document.getElementById('vipCodeInput');
+  const vipMessage = document.getElementById('vipMessage');
+  let currentTier = null;
+
+  function formatPrice(tier, period) {
+    return `${vipPrices[tier][period]} DT/${period}`;
   }
-  if (method.toLowerCase() === 'ooredoo'){
-    const code = prompt('Enter Ooredoo card code:');
-    if (!code) return alert('Cancelled');
-    const to = 'payments@example.com';
-    const subject = encodeURIComponent(`Ooredoo subscription - ${planName}`);
-    const body = encodeURIComponent(`Plan: ${planName}\nPlease process subscription and grant VIP.\nCode: ${code}`);
-    window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-    return;
+
+  function updatePeriodOptions() {
+    const options = [`<option value="week">Weekly - ${vipPrices[currentTier].week} DT</option>`, `<option value="month">Monthly - ${vipPrices[currentTier].month} DT</option>`];
+    periodSelect.innerHTML = options.join('');
+    purchasePrice.textContent = formatPrice(currentTier, periodSelect.value);
   }
-  alert('Unknown payment method');
-}
+
+  function showPanel(tier) {
+    currentTier = tier;
+    purchaseTitle.textContent = `Purchase ${tier} VIP`;
+    vipMessage.textContent = '';
+    vipCodeInput.value = '';
+    updatePeriodOptions();
+    purchasePanel.classList.remove('hidden');
+  }
+
+  function hidePanel() {
+    purchasePanel.classList.add('hidden');
+  }
+
+  periodSelect.addEventListener('change', () => {
+    if (currentTier) purchasePrice.textContent = formatPrice(currentTier, periodSelect.value);
+  });
+
+  document.querySelectorAll('.buy-button').forEach(button => {
+    button.addEventListener('click', () => showPanel(button.dataset.tier));
+  });
+
+  document.getElementById('confirmPurchaseButton').addEventListener('click', async () => {
+    const code = vipCodeInput.value.trim();
+    if (!currentTier || !code) {
+      vipMessage.textContent = 'Please select a period and enter your Ooredoo code.';
+      vipMessage.style.color = '#ff9999';
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/buy-vip', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier: currentTier, period: periodSelect.value, code })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Purchase failed');
+      vipMessage.textContent = `Success! ${currentTier} VIP purchased for ${vipPrices[currentTier][periodSelect.value]} DT.`;
+      vipMessage.style.color = '#b6ffb0';
+      document.querySelectorAll(`.buy-button[data-tier="${currentTier}"]`).forEach(btn => btn.textContent = 'Purchased');
+      setTimeout(hidePanel, 2200);
+    } catch (error) {
+      vipMessage.textContent = error.message;
+      vipMessage.style.color = '#ff9999';
+    }
+  });
+
+  document.getElementById('cancelPurchaseButton').addEventListener('click', hidePanel);
+  document.getElementById('homeButton').addEventListener('click', () => { window.location.href = 'index.html'; });
 </script>
-<script src="auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "api/server.js", "use": "@vercel/node" }
+  ],
+  "rewrites": [
+    { "source": "/auth/:path*", "destination": "/api/server/:path*" },
+    { "source": "/api/:path*", "destination": "/api/server/:path*" }
+  ]
+}

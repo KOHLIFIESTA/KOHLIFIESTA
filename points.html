@@ -1,0 +1,223 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earn Points</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:Inter, Arial, sans-serif;
+  background:#070707;
+  color:#eef2ff;
+  min-height:100vh;
+  padding:30px 18px 50px;
+}
+.container{
+  max-width:1180px;
+  margin:0 auto;
+}
+.page-header{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+  margin-bottom:38px;
+  text-align:center;
+}
+.page-header h1{
+  font-size:3.1rem;
+  color:#ffd000;
+  letter-spacing:0.02em;
+}
+.page-header p{
+  max-width:760px;
+  color:#c7c4bb;
+  line-height:1.8;
+}
+.section{
+  margin-bottom:40px;
+}
+.section-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-bottom:22px;
+}
+.section-header h2{
+  font-size:1.75rem;
+  color:#f7f1c0;
+}
+.section-header span{
+  color:#a9a198;
+}
+.cards{
+  display:grid;
+  gap:22px;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+}
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.04));
+  border:1px solid rgba(255,208,0,0.18);
+  border-radius:24px;
+  padding:26px;
+  backdrop-filter:blur(10px);
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+.card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 65px rgba(255,208,0,0.16);
+}
+.card h3{
+  font-size:1.3rem;
+  margin-bottom:10px;
+  color:#fff;
+}
+.card p{
+  color:#d7d2b6;
+  line-height:1.75;
+}
+.card strong{
+  display:block;
+  margin-top:16px;
+  font-size:1.45rem;
+  color:#ffd000;
+}
+.card input{
+  width:100%;
+  padding:14px 16px;
+  margin-top:18px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.06);
+  color:#f3f2ff;
+}
+.card input::placeholder{
+  color:rgba(243,242,255,0.6);
+}
+.card button{
+  width:100%;
+  margin-top:18px;
+  padding:14px 0;
+  border:none;
+  border-radius:14px;
+  font-weight:700;
+  background:linear-gradient(135deg,#ffd000,#ffb600);
+  color:#101010;
+  cursor:pointer;
+  transition:transform .2s ease, filter .2s ease;
+}
+.card button:hover{
+  transform:translateY(-2px);
+  filter:brightness(1.02);
+}
+.cta-strip{
+  background:rgba(255,209,0,0.08);
+  border:1px solid rgba(255,209,0,0.12);
+  border-radius:22px;
+  padding:24px 26px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:36px;
+}
+.cta-strip h3{
+  margin:0;
+  font-size:1.2rem;
+  color:#fff;
+}
+.cta-strip a{
+  display:inline-flex;
+  align-items:center;
+  padding:12px 18px;
+  border-radius:14px;
+  background:#ffd000;
+  color:#111;
+  text-decoration:none;
+  font-weight:700;
+}
+@media(max-width:640px){
+  .page-header h1{font-size:2.5rem;}
+  .section-header{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="page-header">
+    <h1>💰 Earn More Points</h1>
+    <p>Complete quick rewards and purchase points safely. Link your game account on the profile page for a one-time 250 bonus and enjoy a stronger balance for the shop.</p>
+  </div>
+
+  <div class="cta-strip">
+    <div>
+      <h3>Need more points faster?</h3>
+      <p>Visit the profile page to link your game account and claim the 250-point welcome reward.</p>
+    </div>
+    <a href="profile.html">Go to Profile</a>
+  </div>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>🎯 Daily Quests</h2>
+      <span>Earn free points from simple tasks.</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>Join the Discord Server</h3>
+        <p>Reward: 250 Points for joining our community server. Keep an eye on announcements for extra bonuses.</p>
+        <strong>+250 Points</strong>
+        <button>Claim Reward</button>
+      </div>
+      <div class="card">
+        <h3>Invite a Friend</h3>
+        <p>Share your referral link and get bonus points when a friend signs up. Every successful invite is a direct reward.</p>
+        <strong>+100 Points</strong>
+        <button>Invite Now</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header">
+      <h2>💳 Buy Points With Ooredoo</h2>
+      <span>Select the package that fits your next purchase.</span>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <h3>1500 Points</h3>
+        <p>Ideal for small item purchases and quick upgrades.</p>
+        <strong>5 DT</strong>
+        <input placeholder="Enter Ooredoo code">
+        <button>Buy Now</button>
+      </div>
+      <div class="card">
+        <h3>3500 Points</h3>
+        <p>Great value for VIP passes and premium items.</p>
+        <strong>10 DT</strong>
+        <input placeholder="Enter Ooredoo code">
+        <button>Buy Now</button>
+      </div>
+      <div class="card">
+        <h3>5500 Points</h3>
+        <p>Perfect if you want a strong boost for the shop and events.</p>
+        <strong>20 DT</strong>
+        <input placeholder="Enter Ooredoo code">
+        <button>Buy Now</button>
+      </div>
+      <div class="card">
+        <h3>10000 Points</h3>
+        <p>Maximum points for big purchases and rare items.</p>
+        <strong>40 DT</strong>
+        <input placeholder="Enter Ooredoo code">
+        <button>Buy Now</button>
+      </div>
+    </div>
+  </section>
+</div>
+</body>
+</html>

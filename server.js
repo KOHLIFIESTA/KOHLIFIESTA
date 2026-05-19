@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const fs = require('fs');
 const path = require('path');
+const nodemailer = require('nodemailer');
 require('dotenv').config();
 
 const app = express();
@@ -11,9 +12,21 @@ const USERS_FILE = path.join(DATA_DIR, 'users.json');
 const WHITELIST_FILE = path.join(DATA_DIR, 'whitelist.json');
 const REDEEMED_FILE = path.join(DATA_DIR, 'redeemed_codes.json');
 
-const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID || '1360347472844689571';
-const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET || 'Ji0Sr86J71KDhmDw8Ynj3OL0HXRnD3eU';
-const DISCORD_REDIRECT_URI = process.env.DISCORD_CALLBACK_URL || `http://localhost:${PORT}/auth/callback`;
+const DISCORD_CLIENT_ID = process.env.DISCORD_CLIENT_ID || '1268106023105855593';
+const DISCORD_CLIENT_SECRET = process.env.DISCORD_CLIENT_SECRET || 'lAmDA5sK0t3nMyU41s9qq4eFNsbQ5Zmg';
+const DISCORD_REDIRECT_URI = process.env.DISCORD_CALLBACK_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/auth/callback` : `http://localhost:${PORT}/auth/callback`);
+const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || '';
+const DISCORD_GUILD_ID = process.env.DISCORD_GUILD_ID || '';
+const DISCORD_TICKET_CATEGORY_ID = process.env.DISCORD_TICKET_CATEGORY_ID || '';
+const DISCORD_SUPPORT_ROLE_ID = process.env.DISCORD_SUPPORT_ROLE_ID || '';
+const DISCORD_INVITE_URL = process.env.DISCORD_INVITE_URL || 'https://discord.gg/8tEHmxZkT';
+const PAYMENT_NOTIFICATION_EMAIL = process.env.PAYMENT_NOTIFICATION_EMAIL || 'payments@example.com';
+const EMAIL_SMTP_HOST = process.env.EMAIL_SMTP_HOST || '';
+const EMAIL_SMTP_PORT = process.env.EMAIL_SMTP_PORT ? Number(process.env.EMAIL_SMTP_PORT) : null;
+const EMAIL_SMTP_SECURE = process.env.EMAIL_SMTP_SECURE === 'true';
+const EMAIL_SMTP_USER = process.env.EMAIL_SMTP_USER || '';
+const EMAIL_SMTP_PASS = process.env.EMAIL_SMTP_PASS || '';
+const EMAIL_SENDER = process.env.EMAIL_SENDER || 'Traplife <no-reply@traplife.rp>';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'Kx92!aPz_DevServer_2026_SECRET';
 
 function ensureDataFiles() {
@@ -134,7 +147,7 @@ app.get('/api/session', (req, res) => {
   const avatar = user.avatar ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png` : null;
   const ownerId = process.env.OWNER_ID || null;
   const isOwner = ownerId && ownerId === user.id;
-  return res.json({ authenticated: true, user: { id: user.id, username: user.username, points: user.points, avatar, gameAccount: user.gameAccount || null, isOwner } });
+  return res.json({ authenticated: true, user: { id: user.id, username: user.username, points: user.points, avatar, gameAccount: user.gameAccount || null, vip: user.vip || null, isOwner } });
 });
 
 // Redeem an Ooredoo card code to add points to the user's account
@@ -218,6 +231,35 @@ app.post('/api/buy-points', (req, res) => {
   return res.json({ ok: true, points: user.points, itemName });
 });
 
+app.post('/api/buy-vip', (req, res) => {
+  const { tier, period, code } = req.body;
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+  const validTiers = ['Silver', 'Gold', 'Ultimate'];
+  const validPeriods = ['week', 'month'];
+  if (!validTiers.includes(tier)) return res.status(400).json({ error: 'Invalid VIP tier' });
+  if (!validPeriods.includes(period)) return res.status(400).json({ error: 'Invalid payment period' });
+  if (!code || typeof code !== 'string' || !code.trim()) return res.status(400).json({ error: 'Ooredoo code is required' });
+
+  const prices = {
+    Silver: { week: 5, month: 20 },
+    Gold: { week: 10, month: 35 },
+    Ultimate: { week: 15, month: 45 }
+  };
+  const price = prices[tier][period];
+  const durationDays = period === 'week' ? 7 : 30;
+  const expires = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString();
+
+  const users = loadJson(USERS_FILE);
+  const user = users[userId];
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  user.vip = { tier, period, price, expires, purchasedAt: new Date().toISOString() };
+  saveJson(USERS_FILE, users);
+
+  return res.json({ ok: true, vip: user.vip, message: `Purchased ${tier} VIP for ${price} DT/${period}.` });
+});
+
 app.post('/api/whitelist', (req, res) => {
   const { name, discord, reason, email } = req.body;
   if (!name || !discord || !reason) return res.status(400).json({ error: 'Missing required fields' });
@@ -225,6 +267,120 @@ app.post('/api/whitelist', (req, res) => {
   entries.push({ name, discord, email: email || '', reason, submittedAt: new Date().toISOString() });
   saveJson(WHITELIST_FILE, entries);
   return res.json({ ok: true });
+});
+
+const discordFetch = async (path, method = 'GET', body = null) => {
+  if (!DISCORD_BOT_TOKEN) throw new Error('Discord bot token is not configured');
+  const response = await fetch(`https://discord.com/api/v10${path}`, {
+    method,
+    headers: {
+      Authorization: `Bot ${DISCORD_BOT_TOKEN}`,
+      'Content-Type': 'application/json'
+    },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if (!response.ok) {
+    const payload = await response.text();
+    throw new Error(`Discord API error ${response.status}: ${payload}`);
+  }
+  return response.json();
+};
+
+const getEmailTransporter = () => {
+  if (!EMAIL_SMTP_HOST || !EMAIL_SMTP_PORT || !EMAIL_SMTP_USER || !EMAIL_SMTP_PASS) return null;
+  return nodemailer.createTransport({
+    host: EMAIL_SMTP_HOST,
+    port: EMAIL_SMTP_PORT,
+    secure: EMAIL_SMTP_SECURE,
+    auth: { user: EMAIL_SMTP_USER, pass: EMAIL_SMTP_PASS }
+  });
+};
+
+const sendPurchaseEmail = async ({ user, itemName, price, code, method }) => {
+  const transporter = getEmailTransporter();
+  if (!transporter) throw new Error('Email SMTP is not configured');
+  const messageText = `New purchase request from ${user.username} (${user.id})\nItem: ${itemName}\nPrice: ${price}\nPayment method: ${method}\n${code ? `Ooredoo code: ${code}\n` : ''}`;
+  await transporter.sendMail({
+    from: EMAIL_SENDER,
+    to: PAYMENT_NOTIFICATION_EMAIL,
+    subject: `New ${method === 'ooredoo' ? 'Ooredoo' : 'Shop'} purchase: ${itemName}`,
+    text: messageText
+  });
+};
+
+const createDiscordTicketChannel = async (userId, username, itemName) => {
+  if (!DISCORD_GUILD_ID || !DISCORD_TICKET_CATEGORY_ID) {
+    throw new Error('Discord guild or ticket category ID is not configured');
+  }
+
+  const normalized = itemName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 50);
+  const channelName = `purchase-${normalized}-${Date.now()}`;
+  const overwrites = [
+    {
+      id: DISCORD_GUILD_ID,
+      type: 0,
+      deny: '1024'
+    },
+    {
+      id: userId,
+      type: 1,
+      allow: '3072'
+    }
+  ];
+
+  if (DISCORD_SUPPORT_ROLE_ID) {
+    overwrites.push({
+      id: DISCORD_SUPPORT_ROLE_ID,
+      type: 0,
+      allow: '68608'
+    });
+  }
+
+  const channel = await discordFetch(`/guilds/${DISCORD_GUILD_ID}/channels`, 'POST', {
+    name: channelName,
+    type: 0,
+    parent_id: DISCORD_TICKET_CATEGORY_ID,
+    permission_overwrites: overwrites,
+    topic: `Purchase ticket for ${username} - ${itemName}`
+  });
+
+  const content = `🎫 New purchase request from <@${userId}>\n**Item:** ${itemName}\n**Please handle this order and deliver the item.**`;
+  await discordFetch(`/channels/${channel.id}/messages`, 'POST', { content });
+
+  return `https://discord.com/channels/${DISCORD_GUILD_ID}/${channel.id}`;
+};
+
+app.post('/api/purchase', async (req, res) => {
+  const { itemName, itemPrice, method, code } = req.body;
+  const userId = req.session.userId;
+  if (!userId) return res.status(401).json({ error: 'Not authenticated' });
+  if (!itemName || !itemPrice || !method) return res.status(400).json({ error: 'Missing purchase information' });
+  const users = loadJson(USERS_FILE);
+  const user = users[userId];
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  let ticketUrl = null;
+  try {
+    if (DISCORD_BOT_TOKEN && DISCORD_GUILD_ID && DISCORD_TICKET_CATEGORY_ID) {
+      ticketUrl = await createDiscordTicketChannel(userId, user.username, itemName);
+    }
+  } catch (err) {
+    console.error('Discord ticket error:', err.message);
+  }
+
+  if (method === 'ooredoo') {
+    if (!EMAIL_SMTP_HOST || !EMAIL_SMTP_PORT || !EMAIL_SMTP_USER || !EMAIL_SMTP_PASS) {
+      return res.status(500).json({ error: 'Email notification is not configured' });
+    }
+    try {
+      await sendPurchaseEmail({ user, itemName, price: itemPrice, code, method });
+    } catch (err) {
+      console.error('Ooredoo email error:', err.message);
+      return res.status(500).json({ error: 'Failed to send Ooredoo notification email' });
+    }
+  }
+
+  return res.json({ ok: true, ticketUrl, invite: DISCORD_INVITE_URL, emailSent: method === 'ooredoo' });
 });
 
 app.get('/api/invite-link', (req, res) => {

@@ -7,53 +7,66 @@
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="auth.css">
 	<style>
-		:root{--bg:#050505;--panel:#131313;--accent:#ffd000;--accent-soft:rgba(255,208,0,0.15)}
-		body{margin:0;font-family:Poppins,system-ui,Segoe UI,Roboto,Arial;background:radial-gradient(circle at top,#222 0%,#050505 35%,#040405 100%);color:#eee;}
-		header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:rgba(0,0,0,0.86);border-bottom:1px solid rgba(255,208,0,0.14);backdrop-filter:blur(10px);}
-		header a{color:#fff;text-decoration:none;margin-left:14px;transition:color .2s ease;}
+		:root{--bg:#050505;--panel:rgba(12,12,12,0.86);--accent:#ffd000;--accent-soft:rgba(255,208,0,0.15)}
+		body{margin:0;font-family:Poppins,system-ui,Segoe UI,Roboto,Arial;background:url('https://wallpapercat.com/w/full/3/3/e/28-3840x2160-desktop-4k-grand-theft-auto-san-andreas-wallpaper.jpg') center/cover fixed;color:#eee;}
+		body::before{content:'';position:fixed;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.55),rgba(0,0,0,0.88));pointer-events:none;z-index:-1;}
+		header{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:rgba(0,0,0,0.78);border-bottom:1px solid rgba(255,208,0,0.14);backdrop-filter:blur(10px);position:relative;z-index:1;}
+		header a{color:#fff;text-decoration:none;margin-left:18px;transition:color .2s ease;}
 		header a:hover{color:#ffd000;}
-		.container{padding:28px;max-width:1100px;margin:0 auto;}
+		.container{padding:28px;max-width:1120px;margin:0 auto;position:relative;z-index:1;}
 		.tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:22px;}
-		.tab{background:#111;color:#ddd;padding:12px 16px;border-radius:14px;cursor:pointer;border:1px solid rgba(255,255,255,0.04);transition:transform .25s ease,background .25s ease;}
-		.tab:hover{transform:translateY(-2px);}
-		.tab.active{background:var(--accent);color:#000;box-shadow:0 0 18px rgba(255,208,0,0.2);}
-		.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
-		.item{background:var(--panel);padding:16px;border-radius:18px;border:1px solid rgba(255,208,0,0.08);display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease;}
-		.item:hover{transform:translateY(-8px);box-shadow:0 16px 30px rgba(255,208,0,0.12);}
-		.item img{width:100%;height:170px;object-fit:cover;border-radius:12px;background:#222;transition:transform .3s ease;}
-		.item:hover img{transform:scale(1.02);}
-		.item h4{color:var(--accent);margin:14px 0 8px;}
-		.desc{color:#cfcfcf;flex-grow:1;font-size:14px;line-height:1.65;}
-		.price{font-weight:700;color:#fff;margin:12px 0;font-size:16px;}
-		.buy{background:var(--accent);color:#000;padding:12px;border-radius:10px;border:none;cursor:pointer;font-weight:700;transition:transform .2s ease,box-shadow .2s ease;}
-		.buy:hover{transform:translateY(-2px);box-shadow:0 12px 20px rgba(255,208,0,0.2);}
+		.tab{background:rgba(255,255,255,0.06);color:#ddd;padding:12px 16px;border-radius:14px;cursor:pointer;border:1px solid rgba(255,255,255,0.08);transition:transform .25s ease,background .25s ease,box-shadow .25s ease;}
+		.tab:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.15);}
+		.tab.active{background:var(--accent);color:#111;box-shadow:0 0 18px rgba(255,208,0,0.2);}
+		.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
+		.item{background:var(--panel);padding:18px;border-radius:22px;border:1px solid rgba(255,208,0,0.08);display:flex;flex-direction:column;transition:transform .3s ease,box-shadow .3s ease;}
+		.item:hover{transform:translateY(-8px);box-shadow:0 18px 35px rgba(255,208,0,0.12);}
+		.item img{width:100%;height:180px;object-fit:cover;border-radius:16px;background:#111;transition:transform .3s ease;}
+		.item:hover img{transform:scale(1.04);}
+		.item h4{color:var(--accent);margin:18px 0 10px;font-size:1.25rem;}
+		.desc{color:#d8d4c5;flex-grow:1;font-size:14px;line-height:1.75;}
+		.price{font-weight:700;color:#fff;margin:16px 0 12px;font-size:15px;}
+		.buy, .buy-points{background:var(--accent);color:#111;padding:13px;border-radius:14px;border:none;cursor:pointer;font-weight:700;transition:transform .2s ease,box-shadow .2s ease;}
+		.buy:hover, .buy-points:hover{transform:translateY(-2px);box-shadow:0 12px 24px rgba(255,208,0,0.24);}
+		.buy-points{width:100%;}
 		.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:2000;padding:16px;}
-		.modal{background:#0e0e0e;padding:24px;border-radius:16px;width:420px;max-width:100%;border:1px solid rgba(255,208,0,0.18);box-shadow:0 18px 40px rgba(0,0,0,0.45);}
-		.modal h3{color:var(--accent);margin:0 0 10px;}
-		.modal .row{margin:12px 0;}
+		.modal{background:rgba(10,10,10,0.98);padding:24px;border-radius:18px;width:420px;max-width:100%;border:1px solid rgba(255,208,0,0.2);box-shadow:0 22px 60px rgba(0,0,0,0.55);}
+		.modal h3{color:var(--accent);margin:0 0 14px;font-size:1.5rem;}
+		.modal .row{margin:14px 0;}
 		.radio{display:flex;gap:10px;align-items:center;color:#e2e2e2;}
-		.code-input{width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.08);background:#141414;color:#eee;}
-		.ooredoo-logo{width:20px;height:20px;margin-right:8px;vertical-align:middle}
-		.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;}
-		.link-btn{background:#5865F2;color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;}
-		footer{padding:18px;text-align:center;color:#999;margin-top:28px;border-top:1px solid rgba(255,208,0,0.08);}
-		@media(max-width:520px){.item img{height:120px;}}
+		.code-input{width:100%;padding:14px;border-radius:14px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#eee;}
+		.ooredoo-logo{width:20px;height:20px;margin-right:10px;vertical-align:middle;}
+		.modal-actions{display:flex;gap:12px;justify-content:flex-end;margin-top:20px;flex-wrap:wrap;}
+		.link-btn{background:#5865F2;color:#fff;padding:10px 14px;border-radius:12px;text-decoration:none;display:inline-flex;align-items:center;}
+		.top-btn{display:inline-flex;align-items:center;gap:8px;margin:16px 0 30px;padding:12px 20px;border-radius:16px;border:1px solid rgba(255,208,0,0.3);background:rgba(0,0,0,0.72);color:#fff;text-decoration:none;font-weight:700;transition:transform .2s ease,background .25s ease;}
+		.top-btn:hover{transform:translateY(-2px);background:rgba(255,208,0,0.14);}
+		.section-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap;}
+		.section-head h2{margin:0;color:var(--accent);font-size:1.8rem;}
+		.section-head p{margin:0;color:#d3d2cc;max-width:720px;line-height:1.75;}
+		.points-note{margin-top:22px;color:#cfcfcf;padding:18px 20px;border:1px solid rgba(255,208,0,0.15);border-radius:18px;background:rgba(255,255,255,0.04);}
+		@media(max-width:720px){.grid{grid-template-columns:1fr;}.item img{height:160px;}}
+		@media(max-width:520px){.item img{height:140px;}.header nav{display:none;}}
 	</style>
 </head>
 <body>
-
 <header>
-		<div style="color:var(--accent);font-weight:700;font-size:20px">San Andreas Shop</div>
-		<nav>
-			<a href="index.html">Home</a>
-			<a href="vip.html">VIP</a>
-			<a href="whitelist.html">Whitelist</a>
-			<a href="discord.html">Discord</a>
-		</nav>
+	<div style="color:var(--accent);font-weight:700;font-size:20px">San Andreas Shop</div>
+	<nav>
+		<a href="index.html">Home</a>
+		<a href="vip.html">VIP</a>
+		<a href="whitelist.html">Whitelist</a>
+		<a href="discord.html">Discord</a>
+	</nav>
 </header>
 
 <main class="container">
-	<h1 style="color:var(--accent);margin:10px 0 22px">Shop Categories</h1>
+	<div class="section-head">
+		<div>
+			<h2>Shop Categories</h2>
+			<p>Browse premium San Andreas items and the improved points shop. Use the menu or quick home button to move around the site.</p>
+		</div>
+		<a class="top-btn" href="index.html">🏠 Back to Home</a>
+	</div>
 
 	<div class="tabs" id="categoryTabs">
 		<div class="tab" data-cat="cars">Cars</div>
@@ -68,95 +81,59 @@
 	<section id="cars" class="category">
 		<div class="grid">
 			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/bullet.jpg" alt="Bullet GTA SA">
+				<img src="https://cs4.gtaall.eu/screenshots/d4861/2014-05/original/5af8c224279ed57426170bc69692ef15138859a1/188142-gallery1.jpg" alt="Bullet GTA SA">
 				<h4>Bullet</h4>
-				<div class="desc">Bullet is a high-performance supercar in GTA San Andreas, known for its explosive speed, sharp handling, and aggressive street style.</div>
+				<div class="desc">A high-performance supercar built for top speeds, sharp handling, and aggressive street style.</div>
 				<div class="price">$5,000,000 / 10dt</div>
-				<button class="buy" data-name="Bullet" data-price="$5,000,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/bullet.jpg">Buy</button>
+				<button class="buy" data-name="Bullet" data-price="$5,000,000" data-img="https://cs4.gtaall.eu/screenshots/d4861/2014-05/original/5af8c224279ed57426170bc69692ef15138859a1/188142-gallery1.jpg">Buy</button>
 			</div>
-
 			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/infernus.jpg" alt="Infernus GTA SA">
+				<img src="https://static.wikia.nocookie.net/gtawiki/images/e/e4/Infernus-GTASA-front.jpg/revision/latest?cb=20240107132240" alt="Infernus GTA SA">
 				<h4>Infernus</h4>
-				<div class="desc">Infernus is a legendary supercar in San Andreas with exotic looks, powerful acceleration, and top-tier speed for races and highway runs.</div>
+				<div class="desc">Legendary supercar with exotic style, powerful acceleration, and top-tier speed for highway runs.</div>
 				<div class="price">$3,550,000 / 6dt</div>
-				<button class="buy" data-name="Infernus" data-price="$3,550,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/infernus.jpg">Buy</button>
+				<button class="buy" data-name="Infernus" data-price="$3,550,000" data-img="https://static.wikia.nocookie.net/gtawiki/images/e/e4/Infernus-GTASA-front.jpg/revision/latest?cb=20240107132240">Buy</button>
 			</div>
-
 			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/turismo.jpg" alt="Turismo GTA SA">
+				<img src="https://static.wikia.nocookie.net/grandtheftautosanandreas1/images/9/99/Turismo.jpg/revision/latest?cb=20120629120610" alt="Turismo GTA SA">
 				<h4>Turismo</h4>
-				<div class="desc">Turismo is a streamlined supercar with luxury appeal, perfect for San Andreas players who want explosive acceleration and show-off style.</div>
+				<div class="desc">Streamlined supercar with luxury appeal and explosive acceleration for show-off style.</div>
 				<div class="price">$3,900,000 / 7dt</div>
-				<button class="buy" data-name="Turismo" data-price="$3,900,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/turismo.jpg">Buy</button>
+				<button class="buy" data-name="Turismo" data-price="$3,900,000" data-img="https://static.wikia.nocookie.net/grandtheftautosanandreas1/images/9/99/Turismo.jpg/revision/latest?cb=20120629120610">Buy</button>
 			</div>
-
 			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/banshee.jpg" alt="Banshee GTA SA">
+				<img src="https://static.wikia.nocookie.net/gtawiki/images/8/8f/Banshee-GTASA-front.jpg/revision/latest?cb=20240107132240" alt="Banshee GTA SA">
 				<h4>Banshee</h4>
-				<div class="desc">Banshee is a classic San Andreas street racer, built for agile handling, strong acceleration, and memorable sports-car sound.</div>
+				<div class="desc">A classic street racer known for agile handling, strong acceleration, and iconic sound.</div>
 				<div class="price">$2,150,000 / 5dt</div>
-				<button class="buy" data-name="Banshee" data-price="$2,150,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/banshee.jpg">Buy</button>
-			</div>
-
-			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/cheetah.jpg" alt="Cheetah GTA SA">
-				<h4>Cheetah</h4>
-				<div class="desc">Cheetah delivers high-speed performance with a sleek body and excellent cornering, making it a favorite in San Andreas.</div>
-				<div class="price">$2,900,000 / 6dt</div>
-				<button class="buy" data-name="Cheetah" data-price="$2,900,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/cheetah.jpg">Buy</button>
-			</div>
-
-			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/sultan.jpg" alt="Sultan GTA SA">
-				<h4>Sultan</h4>
-				<div class="desc">Sultan is the iconic tuner sedan of San Andreas, delivering excellent drift control and a sporty street look.</div>
-				<div class="price">$1,100,000 / 4dt</div>
-				<button class="buy" data-name="Sultan" data-price="$1,100,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/sultan.jpg">Buy</button>
-			</div>
-
-			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/stallion.jpg" alt="Stallion GTA SA">
-				<h4>Stallion</h4>
-				<div class="desc">Stallion is a muscle car icon in San Andreas, great for powerful drifts, strong acceleration, and a timeless retro look.</div>
-				<div class="price">$980,000 / 3dt</div>
-				<button class="buy" data-name="Stallion" data-price="$980,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/stallion.jpg">Buy</button>
-			</div>
-
-			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/sandking.jpg" alt="Sandking GTA SA">
-				<h4>Sandking</h4>
-				<div class="desc">Sandking is the iconic off-road truck of San Andreas, built for sandy hills, desert runs, and rugged adventures.</div>
-				<div class="price">$1,700,000 / 5dt</div>
-				<button class="buy" data-name="Sandking" data-price="$1,700,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/sandking.jpg">Buy</button>
-			</div>
-
-			<div class="item">
-				<img src="https://www.gtabase.com/images/gta-san-andreas/vehicles/supergt.jpg" alt="Super GT GTA SA">
-				<h4>Super GT</h4>
-				<div class="desc">Super GT blends luxury and speed, making it one of the smoothest and most elegant San Andreas road cars.</div>
-				<div class="price">$2,300,000 / 5dt</div>
-				<button class="buy" data-name="Super GT" data-price="$2,300,000" data-img="https://www.gtabase.com/images/gta-san-andreas/vehicles/supergt.jpg">Buy</button>
+				<button class="buy" data-name="Banshee" data-price="$2,150,000" data-img="https://static.wikia.nocookie.net/gtawiki/images/8/8f/Banshee-GTASA-front.jpg/revision/latest?cb=20240107132240">Buy</button>
 			</div>
 		</div>
 	</section>
 
-	<section id="clothes" class="category" style="display:none">
+	<section id="Bikes" class="category" style="display:none">
+		<!-- Renamed to Bikes in UI: this section now holds bikes -->
 		<div class="grid">
 			<div class="item">
-				<img src="placeholder-cloth-1.jpg" alt="Clothes">
-				<h4>Mafia Outfit</h4>
-				<div class="desc">Placeholder description for Mafia Outfit.</div>
-				<div class="price">$90,000</div>
-				<button class="buy" data-name="Mafia Outfit" data-price="$90,000" data-img="placeholder-cloth-1.jpg">Buy</button>
+				<img src="https://cs2.gtaall.eu/screenshots/d4861/2020-01/original/1ae8d34a6a0b47d161c75cebfcf239cc9cfe6233/769438-gta-sa-2020-01-13-16-46-11-05-result.jpg" alt="Sanchez Bike">
+				<h4>Sanchez Bike</h4>
+				<div class="desc">Reliable offroad bike, perfect for stunts and desert runs.</div>
+				<div class="price">250 points / $1,200</div>
+				<button class="buy" data-name="Sanchez Bike" data-price="$1,200" data-img="https://cs2.gtaall.eu/screenshots/d4861/2020-01/original/1ae8d34a6a0b47d161c75cebfcf239cc9cfe6233/769438-gta-sa-2020-01-13-16-46-11-05-result.jpg">Buy</button>
 			</div>
-
 			<div class="item">
-				<img src="placeholder-cloth-2.jpg" alt="Clothes">
-				<h4>Street Outfit</h4>
-				<div class="desc">Placeholder description for Street Outfit.</div>
-				<div class="price">$50,000</div>
-				<button class="buy" data-name="Street Outfit" data-price="$50,000" data-img="placeholder-cloth-2.jpg">Buy</button>
+				<img src="https://images.unsplash.com/photo-1505590467740-96b2f6c9f6e9?auto=format&fit=crop&w=900&q=80" alt="FCR-900">
+				<h4>FCR-900</h4>
+				<div class="desc">Sport motorcycle with great acceleration and high top speed.</div>
+				<div class="price">1,800 points / $2,400</div>
+				<button class="buy" data-name="FCR-900" data-price="$2,400" data-img="https://images.unsplash.com/photo-1505590467740-96b2f6c9f6e9?auto=format&fit=crop&w=900&q=80">Buy</button>
+			</div>
+			<div class="item">
+				<img src="https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=900&q=80" alt="PCJ-600">
+				<h4>PCJ-600</h4>
+				<div class="desc">Classic sport bike—balanced handling for city and track.</div>
+				<div class="price">900 points / $900</div>
+				<button class="buy" data-name="PCJ-600" data-price="$900" data-img="https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=900&q=80">Buy</button>
 			</div>
 		</div>
 	</section>
@@ -164,23 +141,20 @@
 	<section id="houses" class="category" style="display:none">
 		<div class="grid">
 			<div class="item">
-				<img src="placeholder-house-1.jpg" alt="House">
+				<img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80" alt="Small House">
 				<h4>Small House</h4>
-				<div class="desc">Placeholder description for Small House.</div>
+				<div class="desc">A cozy starter home with a safe interior, street access, and room for a personal vehicle.</div>
 				<div class="price">$350,000</div>
-				<button class="buy" data-name="Small House" data-price="$350,000" data-img="placeholder-house-1.jpg">Buy</button>
+				<button class="buy" data-name="Small House" data-price="$350,000" data-img="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80">Buy</button>
 			</div>
 		</div>
 	</section>
 
 	<section id="guns" class="category" style="display:none">
-		<div class="grid">
-			<div class="item">
-				<img src="placeholder-gun-1.jpg" alt="Gun">
-				<h4>AK-47</h4>
-				<div class="desc">Placeholder description for AK-47.</div>
-				<div class="price">$15,000</div>
-				<button class="buy" data-name="AK-47" data-price="$15,000" data-img="placeholder-gun-1.jpg">Buy</button>
+		<div style="display:flex;align-items:center;justify-content:center;padding:40px;">
+			<div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,208,0,0.10);padding:28px;border-radius:14px;text-align:center;">
+				<h3 style="color:var(--accent);margin:0 0 8px;">ITS UNAVAILABLE FOR NOW</h3>
+				<p style="color:#e6dfb8;margin:0;font-weight:700;">(there is mafia in the game)</p>
 			</div>
 		</div>
 	</section>
@@ -188,11 +162,11 @@
 	<section id="islands" class="category" style="display:none">
 		<div class="grid">
 			<div class="item">
-				<img src="placeholder-island-1.jpg" alt="Island">
+				<img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80" alt="Private Island">
 				<h4>Private Island</h4>
-				<div class="desc">Placeholder description for Private Island.</div>
+				<div class="desc">A hidden island retreat for your top-tier crew, with exclusive privacy and space.</div>
 				<div class="price">$2,500,000</div>
-				<button class="buy" data-name="Private Island" data-price="$2,500,000" data-img="placeholder-island-1.jpg">Buy</button>
+				<button class="buy" data-name="Private Island" data-price="$2,500,000" data-img="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80">Buy</button>
 			</div>
 		</div>
 	</section>
@@ -200,68 +174,62 @@
 	<section id="garages" class="category" style="display:none">
 		<div class="grid">
 			<div class="item">
-				<img src="placeholder-garage-1.jpg" alt="Garage">
+				<img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80" alt="Large Garage">
 				<h4>Large Garage</h4>
-				<div class="desc">Placeholder description for Large Garage.</div>
+				<div class="desc">Secure garage with room for multiple vehicles and upgrades for your car collection.</div>
 				<div class="price">$120,000</div>
-				<button class="buy" data-name="Large Garage" data-price="$120,000" data-img="placeholder-garage-1.jpg">Buy</button>
+				<button class="buy" data-name="Large Garage" data-price="$120,000" data-img="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=900&q=80">Buy</button>
 			</div>
 		</div>
 	</section>
 
 	<section id="points" class="category" style="display:none">
-		<h2 style="color:var(--accent);margin-top:0">Points Shop</h2>
-		<p style="color:#cfcfcf">Buy items using your points balance. Earn points by inviting friends — share your referral link.</p>
+		<div class="section-head">
+			<h2>Points Shop</h2>
+			<p>Purchase exclusive point-only items, or earn more points by inviting friends using your referral link.</p>
+		</div>
 		<div class="grid">
 			<div class="item">
-				<img src="placeholder-vip-week.jpg" alt="VIP week">
+				<img src="https://images.unsplash.com/photo-1527443154391-507e9dc6c5cc?auto=format&fit=crop&w=900&q=80" alt="VIP week">
 				<h4>Basic VIP — 1 Week</h4>
-				<div class="desc">Gives VIP perks for 7 in-game days. (Placeholder)</div>
+				<div class="desc">Seven-day VIP access with quality perks and priority benefits in the server.</div>
 				<div class="price">500 points</div>
 				<button class="buy-points" data-name="Basic VIP (1 week)" data-cost="500">Buy with points</button>
 			</div>
-
 			<div class="item">
-				<img src="placeholder-drug.jpg" alt="Crack drug">
-				<h4>Crack Drug (game item)</h4>
-				<div class="desc">Placeholder in-game consumable.
-				</div>
+				<img src="https://images.unsplash.com/photo-1472335373347-d5adf37f2113?auto=format&fit=crop&w=900&q=80" alt="Crack drug">
+				<h4>Crack Drug</h4>
+				<div class="desc">A consumable boost for mission advantage and rapid performance in the game.</div>
 				<div class="price">150 points</div>
 				<button class="buy-points" data-name="Crack Drug" data-cost="150">Buy with points</button>
 			</div>
-
 			<div class="item">
-				<img src="placeholder-bike.jpg" alt="Sanchez bike">
+				<img src="https://images.unsplash.com/photo-1518515097038-ca19a3777cd6?auto=format&fit=crop&w=900&q=80" alt="Sanchez bike">
 				<h4>Sanchez Bike</h4>
-				<div class="desc">Two-wheeled offroad bike for missions and stunts.</div>
+				<div class="desc">Offroad bike for fast travel, stunts, and adventurous desert runs.</div>
 				<div class="price">250 points</div>
 				<button class="buy-points" data-name="Sanchez Bike" data-cost="250">Buy with points</button>
 			</div>
 		</div>
-		<div style="margin-top:14px;color:#cfcfcf">
+		<div class="points-note">
 			<strong>Invite reward:</strong> When someone signs up using your referral link, you get 100 points.
 		</div>
 	</section>
-
 </main>
 
-<!-- Payment Modal -->
 <div class="modal-backdrop" id="modalBackdrop">
 	<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
 		<h3 id="modalTitle">Buy Item</h3>
 		<div id="modalItemInfo" class="row"></div>
-
 		<div class="row">
 			<label class="radio"><input type="radio" name="payMethod" value="credit" checked> Buy with in-game credit money</label>
 		</div>
 		<div class="row">
 			<label class="radio"><input type="radio" name="payMethod" value="ooredoo"> <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/Ooredoo_logo.svg" class="ooredoo-logo" alt="Ooredoo">Buy with an Ooredoo card code</label>
 		</div>
-
 		<div id="ooredooSection" style="display:none;margin-top:10px">
 			<input id="cardCode" class="code-input" placeholder="Enter Ooredoo card code here">
 		</div>
-
 		<div class="modal-actions">
 			<button id="cancelBtn" class="buy" style="background:#444;color:#fff">Cancel</button>
 			<button id="proceedBtn" class="buy">Proceed</button>
@@ -274,7 +242,6 @@
 </footer>
 
 <script>
-	// Tabs
 	const tabs = document.querySelectorAll('.tab');
 	const categories = document.querySelectorAll('.category');
 
@@ -285,13 +252,11 @@
 
 	tabs.forEach(t=> t.addEventListener('click', ()=> showCategory(t.dataset.cat)));
 
-	// If URL hash present, open that category
 	const hash = location.hash.replace('#','');
 	if(hash){
 		const tab = document.querySelector(`.tab[data-cat="${hash}"]`);
 		if(tab) showCategory(hash);
 	} else {
-		// default
 		showCategory('cars');
 	}
 
@@ -334,14 +299,13 @@
 		return true;
 	}
 
-	// Wire buy-points buttons
 	document.querySelectorAll('.buy-points').forEach(b=> b.addEventListener('click', async ()=>{
-		const name = b.dataset.name; const cost = parseInt(b.dataset.cost,10);
+		const name = b.dataset.name;
+		const cost = parseInt(b.dataset.cost,10);
 		if (!(await requireAuth())) return;
 		buyWithPoints(name,cost);
 	}));
 
-	/* ---------------------- Existing Paid Modal logic (unchanged) */
 	const modalBackdrop = document.getElementById('modalBackdrop');
 	const modalItemInfo = document.getElementById('modalItemInfo');
 	const proceedBtn = document.getElementById('proceedBtn');
@@ -351,23 +315,20 @@
 
 	let currentItem = null;
 
-	document.querySelectorAll('.buy[data-name]').forEach(btn=>{
-		btn.addEventListener('click', async (e)=>{
-			if (!(await requireAuth())) return;
-			const name = btn.dataset.name;
-			const price = btn.dataset.price;
-			const img = btn.dataset.img;
-			currentItem = {name,price,img};
-			modalItemInfo.innerHTML = `<strong style="color:#fff">${name}</strong><div style="color:#cfcfcf">Price: ${price}</div>`;
-			modalBackdrop.style.display = 'flex';
-			// reset
-			document.querySelector('input[name="payMethod"][value="credit"]').checked = true;
-			ooredooSection.style.display = 'none';
-			cardCodeInput.value = '';
-		});
+document.querySelectorAll('.buy[data-name]').forEach(btn=>{
+	btn.addEventListener('click', async ()=>{
+		if (!(await requireAuth())) return;
+		const name = btn.dataset.name;
+		const price = btn.dataset.price;
+		currentItem = {name,price};
+		modalItemInfo.innerHTML = `<strong style="color:#fff">${name}</strong><div style="color:#cfcfcf">Price: ${price}</div>`;
+		modalBackdrop.style.display = 'flex';
+		document.querySelector('input[name="payMethod"][value="credit"]').checked = true;
+		ooredooSection.style.display = 'none';
+		cardCodeInput.value = '';
 	});
+});
 
-	// payment method toggle
 	document.querySelectorAll('input[name="payMethod"]').forEach(r=> r.addEventListener('change', ()=>{
 		ooredooSection.style.display = document.querySelector('input[name="payMethod"]:checked').value === 'ooredoo' ? 'block' : 'none';
 	}));
@@ -383,34 +344,53 @@
 		}
 	});
 
-	proceedBtn.addEventListener('click', ()=>{
-		const method = document.querySelector('input[name="payMethod"]:checked').value;
-		if(!currentItem) return;
-
-		if(method === 'credit'){
-			// Redirect to Discord invite — server staff can create a ticket once user joins
-			const discordInvite = 'https://discord.gg/8tEHmxZkT';
-			// open in new tab
-			window.open(discordInvite, '_blank');
-			modalBackdrop.style.display = 'none';
-			alert('You will be redirected to Discord to create a support ticket.');
-		} else {
+	const purchaseItem = async (method) => {
+		if (!currentItem) return;
+		const payload = { itemName: currentItem.name, itemPrice: currentItem.price, method };
+		if (method === 'ooredoo') {
 			const code = cardCodeInput.value.trim();
-			if(!code){ alert('Please enter the Ooredoo card code.'); return; }
-			// Prepare an email to send the code — opens user's mail client with prefilled email
-			const to = 'payments@example.com'; // <-- change to your real email
-			const subject = encodeURIComponent(`Ooredoo payment - ${currentItem.name}`);
-			const body = encodeURIComponent(`Item: ${currentItem.name}\nPrice: ${currentItem.price}\nCard code: ${code}\nPlease process this payment and deliver the item.`);
-			window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-			modalBackdrop.style.display = 'none';
+			if (!code) {
+				alert('Please enter the Ooredoo card code.');
+				return;
+			}
+			payload.code = code;
 		}
+
+		try {
+			const result = await fetchJson('/api/purchase', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			});
+			modalBackdrop.style.display = 'none';
+			const destination = result.ticketUrl || result.invite || 'https://discord.gg/8tEHmxZkT';
+
+			if (method === 'credit') {
+				alert('A Discord support ticket was created for your purchase. You are being redirected to the server.');
+				window.open(destination, '_blank');
+			} else {
+				let message = 'Your Ooredoo purchase request was sent to support.';
+				if (result.ticketUrl) message += ' A Discord ticket was also created.';
+				alert(message);
+				window.open(destination, '_blank');
+			}
+		} catch (err) {
+			if (err.message.includes('Not authenticated')) {
+				alert('Please sign in to complete your purchase.');
+				auth.showAuthOverlay({ requireLogin: true });
+				return;
+			}
+			alert(err.message);
+		}
+	};
+
+	proceedBtn.addEventListener('click', () => {
+		const method = document.querySelector('input[name="payMethod"]:checked').value;
+		purchaseItem(method);
 	});
 
-	// Close modal when clicking backdrop
 	modalBackdrop.addEventListener('click', (e)=>{ if(e.target === modalBackdrop) modalBackdrop.style.display = 'none'; });
-
 </script>
 <script src="auth.js"></script>
-
 </body>
 </html>

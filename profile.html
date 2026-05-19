@@ -1,143 +1,227 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Profile</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="auth.css">
 <style>
-body{margin:0;font-family:Poppins;background:#050505;color:white}
-.container{max-width:900px;margin:40px auto;padding:24px}
-.profile{display:flex;gap:20px;align-items:center}
-.avatar{width:120px;height:120px;border-radius:50%;background:#222;border:4px solid rgba(255,208,0,0.18)}
-.info h2{color:#ffd000;margin:0}
-.info p{color:#ddd}
-.form-row{margin-top:16px}
-.input{padding:10px;border-radius:10px;border:1px solid #222;background:#0b0b0b;color:#eee;width:100%}
-.btn{background:#ffd000;color:black;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
-.small{font-size:13px;color:#cfcfcf}
-.owner-btn{background:#ffd000;color:#000;padding:8px 10px;border-radius:8px;cursor:pointer;border:none}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:Inter, Arial, sans-serif;
+  background:url('https://images3.alphacoders.com/139/1395361.png') center/cover no-repeat fixed;
+  min-height:100vh;
+  color:#f7f7f7;
+}
+.overlay{
+  background:rgba(0,0,0,0.78);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:30px;
+}
+.card{
+  width:min(520px,100%);
+  background:rgba(15,15,15,0.94);
+  border:1px solid rgba(255,208,0,0.28);
+  border-radius:28px;
+  padding:36px;
+  text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,0.35);
+}
+.avatar{
+  width:130px;
+  height:130px;
+  border-radius:50%;
+  border:4px solid #ffd000;
+  margin-bottom:18px;
+}
+h1{
+  color:#ffd000;
+  font-size:2.2rem;
+  margin-bottom:6px;
+}
+.subtitle{
+  color:#d4c477;
+  margin-bottom:24px;
+}
+.stat-row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  margin:16px 0 24px;
+  padding:18px 22px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+}
+.stat-row span{
+  display:block;
+  font-size:0.95rem;
+  color:#e6e0c1;
+}
+.stat-row strong{
+  color:#ffffff;
+  font-size:1.3rem;
+}
+input,
+button{
+  width:100%;
+  outline:none;
+  border:none;
+  border-radius:16px;
+  font-size:1rem;
+}
+input{
+  padding:16px 18px;
+  margin:12px 0 8px;
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+}
+input::placeholder{
+  color:rgba(255,255,255,0.6);
+}
+.button-row{
+  display:grid;
+  gap:14px;
+  margin-top:16px;
+}
+button{
+  padding:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:transform .25s ease, background .25s ease;
+}
+button.primary{
+  background:linear-gradient(135deg,#ffd000,#ffb700);
+  color:#111;
+}
+button.secondary{
+  background:rgba(255,255,255,0.08);
+  color:#f7f7f7;
+  border:1px solid rgba(255,255,255,0.12);
+}
+button:hover{
+  transform:translateY(-2px);
+}
+.message{
+  margin-top:18px;
+  min-height:24px;
+  color:#d4f5d4;
+  font-weight:600;
+}
+.message.error{
+  color:#ffbb99;
+}
+.link-text{
+  display:inline-block;
+  margin-top:22px;
+  color:#ffd000;
+  text-decoration:none;
+  font-weight:700;
+}
 </style>
 </head>
 <body>
-<header style="padding:12px 20px;background:#000;display:flex;justify-content:space-between;align-items:center">
-<div style="color:#ffd000;font-weight:700">Arab Online - Profile</div>
-<nav>
-<a href="index.html" style="color:#fff;margin-right:12px">Home</a>
-<a href="shop.html" style="color:#fff">Shop</a>
-</nav>
-</header>
-<div class="container">
-  <div id="profileArea">
-    <div class="profile">
-      <div class="avatar" id="avatarEl"></div>
-      <div class="info">
-        <h2 id="username">-</h2>
-        <p>Points: <strong id="points">-</strong></p>
-        <p class="small" id="gameAccountText">No game account linked.</p>
-        <div class="form-row" id="linkRow">
-          <input id="gameName" class="input" placeholder="Enter your in-game name to link (one-time)">
-          <div style="height:8px"></div>
-          <button id="linkBtn" class="btn">Link Game Account (+250 pts)</button>
-        </div>
+<div class="overlay">
+  <div class="card">
+    <img class="avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="User avatar">
+    <h1 id="profileName">Discord Username</h1>
+    <div class="subtitle" id="profileStatus">Link your game account to earn 250 bonus points.</div>
 
-        <div style="height:18px"></div>
-        <div style="border-top:1px solid rgba(255,255,255,0.04);padding-top:14px">
-          <h3 style="margin:0 0 8px">Buy Points</h3>
-          <p class="small">Redeem Ooredoo card codes to add points to your account.</p>
-          <div style="display:flex;gap:8px;margin-top:10px;align-items:center;">
-            <select id="pointAmount" class="input" style="max-width:160px">
-              <option value="100">100 points</option>
-              <option value="250">250 points</option>
-              <option value="500">500 points</option>
-              <option value="1000">1000 points</option>
-            </select>
-            <input id="ooredooCode" class="input" placeholder="Enter Ooredoo card code">
-            <button id="redeemBtn" class="btn">Redeem</button>
-          </div>
-          <div style="height:8px"></div>
-          <div id="redeemResult" class="small"></div>
-        </div>
-
-        <div style="height:12px"></div>
-        <button id="grantBtn" class="owner-btn" style="display:none">Grant 100000 Test Points</button>
+    <div class="stat-row">
+      <div>
+        <span>Points Balance</span>
+        <strong id="pointsValue">0</strong>
+      </div>
+      <div>
+        <span>Game Account</span>
+        <strong id="gameAccountValue">Not linked</strong>
       </div>
     </div>
+
+    <input id="gameNameInput" type="text" placeholder="Enter Game Username">
+    <div class="button-row">
+      <button id="linkGameButton" class="primary">🎮 Link Game Account</button>
+      <button id="earnPointsButton" class="secondary">💰 Earn More Points</button>
+      <button id="homeButton" class="secondary">🏠 Back to Home</button>
+    </div>
+
+    <div class="message" id="statusMessage"></div>
   </div>
 </div>
 <script>
-async function fetchJson(url, opts) {
-  const res = await fetch(url, opts);
-  if(!res.ok){ const err = await res.json().catch(()=>({error:res.statusText})); throw new Error(err.error||res.statusText); }
-  return res.json();
-}
-
-async function loadProfile(){
-  try{
-    const s = await fetchJson('/api/session');
-    if(!s.authenticated){ window.location.href = '/'; return; }
-    const user = s.user;
-    document.getElementById('username').textContent = user.username;
-    document.getElementById('points').textContent = user.points;
-    if(user.avatar){
-      const a = document.getElementById('avatarEl');
-      a.style.backgroundImage = `url(${user.avatar})`;
-      a.style.backgroundSize = 'cover';
-      a.style.backgroundPosition = 'center';
+  async function fetchSession() {
+    try {
+      const response = await fetch('/api/session');
+      if (!response.ok) throw new Error('Unable to load session');
+      return await response.json();
+    } catch (error) {
+      return { authenticated: false };
     }
-    // Show linked game account if present
-    if(user.gameAccount){
-      document.getElementById('gameAccountText').textContent = 'Linked: ' + user.gameAccount;
-      document.getElementById('gameName').disabled = true;
-      document.getElementById('linkBtn').disabled = true;
-    } else {
-      document.getElementById('gameAccountText').textContent = 'No game account linked.';
-      document.getElementById('gameName').disabled = false;
-      document.getElementById('linkBtn').disabled = false;
+  }
+
+  function updateProfile(user) {
+    document.getElementById('profileName').textContent = user.username || 'Discord Username';
+    document.getElementById('pointsValue').textContent = user.points || 0;
+    document.getElementById('gameAccountValue').textContent = user.gameAccount || 'Not linked';
+    document.getElementById('profileStatus').textContent = user.gameAccount
+      ? 'Game account linked successfully. Enjoy your bonus points!' 
+      : 'Link your game account to receive 250 bonus points.';
+    const alreadyLinked = Boolean(user.gameAccount);
+    document.getElementById('gameNameInput').disabled = alreadyLinked;
+    document.getElementById('linkGameButton').textContent = alreadyLinked ? '✅ Account Linked' : '🎮 Link Game Account';
+    document.getElementById('linkGameButton').classList.toggle('primary', !alreadyLinked);
+    document.getElementById('linkGameButton').classList.toggle('secondary', alreadyLinked);
+  }
+
+  function showMessage(message, type = 'success') {
+    const el = document.getElementById('statusMessage');
+    el.textContent = message;
+    el.className = type === 'error' ? 'message error' : 'message';
+  }
+
+  async function linkGameAccount() {
+    const input = document.getElementById('gameNameInput');
+    const gameName = input.value.trim();
+    if (!gameName) {
+      showMessage('Please enter your game username before linking.', 'error');
+      return;
     }
-    // Show owner grant button only for owners
-    if(user.isOwner){
-      document.getElementById('grantBtn').style.display = 'inline-block';
-    } else {
-      document.getElementById('grantBtn').style.display = 'none';
+
+    try {
+      const response = await fetch('/api/link-game', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ gameName })
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || 'Unable to link account');
+      updateProfile({ username: document.getElementById('profileName').textContent, points: result.points, gameAccount: result.gameAccount });
+      showMessage(`Success! ${result.gameAccount} is linked and you received ${result.points} points.`);
+    } catch (error) {
+      showMessage(error.message || 'Link failed.', 'error');
     }
-  }catch(err){ console.error(err); window.location.href = '/'; }
-}
+  }
 
-document.getElementById('linkBtn').addEventListener('click', async ()=>{
-  const name = document.getElementById('gameName').value.trim();
-  if(!name){ alert('Enter game name'); return; }
-  try{
-    const res = await fetchJson('/api/link-game', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ gameName: name }) });
-    alert('Game linked — you received 250 points!');
-    document.getElementById('points').textContent = res.points;
-    document.getElementById('gameAccountText').textContent = 'Linked: ' + res.gameAccount;
-    document.getElementById('gameName').disabled = true;
-    document.getElementById('linkBtn').disabled = true;
-  }catch(err){ alert(err.message); }
-});
+  document.getElementById('earnPointsButton').addEventListener('click', () => {
+    window.location.href = 'points.html';
+  });
+  document.getElementById('homeButton').addEventListener('click', () => {
+    window.location.href = 'index.html';
+  });
+  document.getElementById('linkGameButton').addEventListener('click', linkGameAccount);
 
-document.getElementById('redeemBtn').addEventListener('click', async ()=>{
-  const code = document.getElementById('ooredooCode').value.trim();
-  const points = document.getElementById('pointAmount').value;
-  if(!code){ alert('Enter Ooredoo code'); return; }
-  try{
-    const res = await fetchJson('/api/redeem-ooredoo', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ code, points }) });
-    document.getElementById('points').textContent = res.points;
-    document.getElementById('redeemResult').textContent = 'Redeemed successfully.';
-    document.getElementById('ooredooCode').value = '';
-  }catch(err){ document.getElementById('redeemResult').textContent = 'Error: ' + err.message; }
-});
-
-document.getElementById('grantBtn').addEventListener('click', async ()=>{
-  try{
-    const res = await fetchJson('/api/grant-owner-points', { method: 'POST' });
-    alert('Owner test points granted: ' + res.points);
-    document.getElementById('points').textContent = res.points;
-  }catch(err){ alert('Not owner or error: ' + err.message); }
-});
-
-loadProfile();
+  window.addEventListener('DOMContentLoaded', async () => {
+    const session = await fetchSession();
+    if (!session.authenticated) {
+      document.getElementById('profileStatus').textContent = 'Please sign in with Discord to manage your profile.';
+      document.getElementById('linkGameButton').disabled = true;
+      return;
+    }
+    updateProfile(session.user);
+  });
 </script>
-<script src="auth.js"></script>
 </body>
 </html>
